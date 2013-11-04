@@ -134,7 +134,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 			for(float fz = 0.0f; fz < size; fz += 1.0) {
 				Gdx.gl11.glPushMatrix();
 				Gdx.gl11.glTranslatef(fx, 1.0f, fz);
-				Gdx.gl11.glScalef(0.95f, 0.95f, 0.95f);
+				Gdx.gl11.glScalef(1.0f, 1.0f, 1.0f);
 				drawBox();
 				Gdx.gl11.glPopMatrix();
 			}
@@ -165,7 +165,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 		// Draw floor!
 		drawFloor(50);
-		lightCycle1.draw();
+		lightCycle1.draw(1.0f, 1.0f);
 	}
 
 	@Override

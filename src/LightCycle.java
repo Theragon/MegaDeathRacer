@@ -15,9 +15,9 @@ import com.badlogic.gdx.utils.BufferUtils;
 public class LightCycle {
 
 	FloatBuffer vertexBuffer;
-	FloatBuffer texCoordBuffer;
+	//FloatBuffer texCoordBuffer;
 
-	Texture tex;
+	//Texture tex;
 
 	public LightCycle(/*String textureImage*/)
 	{
@@ -49,17 +49,20 @@ public class LightCycle {
 	}
 
 
-	public void draw()
+	public void draw(float xPlayer1, float zPlayer1)
 	{
 		Gdx.gl11.glShadeModel(GL11.GL_SMOOTH);
 		Gdx.gl11.glVertexPointer(3, GL11.GL_FLOAT, 0, vertexBuffer);
 
-		Gdx.gl11.glEnable(GL11.GL_TEXTURE_2D);
-		Gdx.gl11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+//		Gdx.gl11.glEnable(GL11.GL_TEXTURE_2D);
+//		Gdx.gl11.glEnableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 
 //		tex.bind();  //Gdx.gl11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
 
 //		Gdx.gl11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, texCoordBuffer);
+		Gdx.gl11.glPushMatrix();
+		Gdx.gl11.glTranslatef(xPlayer1, 2.4f, zPlayer1);
+		Gdx.gl11.glScalef(2.0f, 0.5f, 0.5f);
 
 		Gdx.gl11.glNormal3f(0.0f, 0.0f, -1.0f);
 		Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
@@ -74,8 +77,9 @@ public class LightCycle {
 		Gdx.gl11.glNormal3f(0.0f, -1.0f, 0.0f);
 		Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 20, 4);
 
-		Gdx.gl11.glDisable(GL11.GL_TEXTURE_2D);
-		Gdx.gl11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+		Gdx.gl11.glPopMatrix();
 
+//		Gdx.gl11.glDisable(GL11.GL_TEXTURE_2D);
+//		Gdx.gl11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 	}
 }

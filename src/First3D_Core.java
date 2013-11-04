@@ -17,10 +17,14 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	private float count = 0;
 
 	LightCycle lightCycle1;
-		
+	float startPositionX1 = -2.0f;
+	float startPositionZ1 = 1.0f;
+	float playerPositionX1;
+	float playerPositionZ1;
+
 	@Override
-	public void create() {
-		
+	public void create()
+	{
 		Gdx.input.setInputProcessor(this);
 		
 		Gdx.gl11.glEnable(GL11.GL_LIGHTING);
@@ -52,9 +56,11 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		vertexBuffer.rewind();
 
 		Gdx.gl11.glVertexPointer(3, GL11.GL_FLOAT, 0, vertexBuffer);
-		cam = new Camera(new Point3D(0.0f, 3.0f, 2.0f), new Point3D(2.0f, 3.0f, 3.0f), new Vector3D(0.0f, 1.0f, 0.0f));
+		cam = new Camera(new Point3D(startPositionX1, 3.5f, startPositionZ1), new Point3D(19.0f, 0.0f, 1.0f), new Vector3D(0.0f, 1.0f, 0.0f));
 
 		lightCycle1 = new LightCycle();
+		drawFloor(20);
+		lightCycle1.draw(startPositionX1, startPositionZ1);
 	}
 
 	@Override
@@ -71,7 +77,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	
 	private void update() {
 		
-		if(this.wiggleLights){
+		if(this.wiggleLights)
+		{
 			count += 0.03;
 			this.wiggleValue = (float) Math.sin(count) * 10;
 		}
@@ -83,34 +90,42 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		
 		float deltaTime = Gdx.graphics.getDeltaTime();
 
-		if(Gdx.input.isKeyPressed(Input.Keys.UP)) 
+		if(Gdx.input.isKeyPressed(Input.Keys.UP))
 			cam.pitch(-90.0f * deltaTime);
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) 
+		if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
 			cam.pitch(90.0f * deltaTime);
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) 
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
 			cam.yaw(-90.0f * deltaTime);
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) 
+		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
 			cam.yaw(90.0f * deltaTime);
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.W)) 
+		if(Gdx.input.isKeyPressed(Input.Keys.W))
+		{
 			cam.slide(0.0f, 0.0f, -10.0f * deltaTime);
+			playerPositionX1 = cam.eye.x+2.0f;
+			playerPositionZ1 = cam.eye.z;
+		}
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.S)) 
+		if(Gdx.input.isKeyPressed(Input.Keys.S))
+		{
 			cam.slide(0.0f, 0.0f, 10.0f * deltaTime);
+			playerPositionX1 = cam.eye.x+2.0f;
+			playerPositionZ1 = cam.eye.z;
+		}
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.A)) 
+		if(Gdx.input.isKeyPressed(Input.Keys.A))
 			cam.slide(-10.0f * deltaTime, 0.0f, 0.0f);
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.D)) 
+		if(Gdx.input.isKeyPressed(Input.Keys.D))
 			cam.slide(10.0f * deltaTime, 0.0f, 0.0f);
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.R)) 
+		if(Gdx.input.isKeyPressed(Input.Keys.R))
 			cam.slide(0.0f, 10.0f * deltaTime, 0.0f);
 		
-		if(Gdx.input.isKeyPressed(Input.Keys.F)) 
+		if(Gdx.input.isKeyPressed(Input.Keys.F))
 			cam.slide(0.0f, -10.0f * deltaTime, 0.0f);
 	}
 	
@@ -165,7 +180,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 		// Draw floor!
 		drawFloor(50);
-		lightCycle1.draw(1.0f, 1.0f);
+		lightCycle1.draw(playerPositionX1, playerPositionZ1);
 	}
 
 	@Override

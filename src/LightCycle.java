@@ -61,7 +61,7 @@ public class LightCycle {
 
 //		Gdx.gl11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, texCoordBuffer);
 		Gdx.gl11.glPushMatrix();
-		Gdx.gl11.glTranslatef(xPlayer1, 2.4f, zPlayer1);
+		Gdx.gl11.glTranslatef(xPlayer1, 2.0f, zPlayer1);
 		Gdx.gl11.glScalef(2.0f, 0.5f, 0.5f);
 
 		Gdx.gl11.glNormal3f(0.0f, 0.0f, -1.0f);

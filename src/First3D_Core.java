@@ -15,6 +15,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	private boolean wiggleLights = false;
 	private float wiggleValue = 0f;
 	private float count = 0;
+
+	LightCycle lightCycle1;
 		
 	@Override
 	public void create() {
@@ -51,6 +53,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 		Gdx.gl11.glVertexPointer(3, GL11.GL_FLOAT, 0, vertexBuffer);
 		cam = new Camera(new Point3D(0.0f, 3.0f, 2.0f), new Point3D(2.0f, 3.0f, 3.0f), new Vector3D(0.0f, 1.0f, 0.0f));
+
+		lightCycle1 = new LightCycle();
 	}
 
 	@Override
@@ -71,8 +75,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 			count += 0.03;
 			this.wiggleValue = (float) Math.sin(count) * 10;
 		}
-		
-		
 		
 		if(this.ligthBulbState)
 			Gdx.gl11.glEnable(GL11.GL_LIGHT0);
@@ -163,6 +165,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 		// Draw floor!
 		drawFloor(50);
+		lightCycle1.draw();
 	}
 
 	@Override

@@ -23,16 +23,16 @@ public class LightCycle {
 	final int EAST = 1;
 	final int SOUTH = 2;
 	final int WEST = 3;
-	Point3D position;// = new Point3D(1.0f, 2.0f, 1.0f);
+	Point3D pos;// = new Point3D(1.0f, 2.0f, 1.0f);
 
 	//Texture tex;
 
 	public LightCycle(/*String textureImage*/ float x, float y, float z, int dir)
 	{
-		position = new Point3D(x, y, z);
-		this.position.x = x;
-		this.position.y = y;
-		this.position.z = z;
+		pos = new Point3D(x, y, z);
+		this.pos.x = x;
+		this.pos.y = y;
+		this.pos.z = z;
 		this.direction = dir;
 
 		vertexBuffer = BufferUtils.newFloatBuffer(72);
@@ -78,14 +78,14 @@ public class LightCycle {
 
 //		Gdx.gl11.glTexCoordPointer(2, GL11.GL_FLOAT, 0, texCoordBuffer);
 		Gdx.gl11.glPushMatrix();
-		Gdx.gl11.glTranslatef(position.x, position.y, position.z);
+		Gdx.gl11.glTranslatef(pos.x, pos.y, pos.z);
 		if(direction == EAST)
 			Gdx.gl11.glRotatef(90, 0, 1, 0);
 		if(direction == WEST)
 			Gdx.gl11.glRotatef(-90, 0, 1, 0);
 
 //		Gdx.gl11.glLoadIdentity();
-//		Gdx.glu.gluLookAt(gl10, position.x-3, position.y+3, position.z-3, position.x, position.y, position.z, 0, 1, 0);
+//		Gdx.glu.gluLookAt(gl10, pos.x-3, pos.y+3, pos.z-3, pos.x, pos.y, pos.z, 0, 1, 0);
 		Gdx.gl11.glScalef(2.0f, 0.5f, 0.5f);
 
 		Gdx.gl11.glNormal3f(0.0f, 0.0f, -1.0f);
@@ -137,21 +137,5 @@ public class LightCycle {
 					this.direction += 1;
 				break;
 		}
-//		if(direction == LEFT)
-/*		if(direction == Input.Keys.LEFT)
-		{
-			if(this.direction == NORTH)
-				this.direction = WEST;
-			else
-				this.direction -= 1;
-		}
-//		if(direction == RIGHT)
-		if(direction == Input.Keys.RIGHT)
-		{
-			if(this.direction == WEST)
-				this.direction = NORTH;
-			else
-				this.direction += 1;
-		}*/
 	}
 }

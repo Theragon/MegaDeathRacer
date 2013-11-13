@@ -18,11 +18,9 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	private float wiggleValue = 0f;
 	private float count = 0;
 
-	LightCycle lightCycle1;
-	LightCycle lightCycle2;
-	final int WORLDSIZE = 20;   // 20x20 grid
-	float startPositionX1 = -2.0f;
-	float startPositionZ1 = 1.0f;
+	LightCycle cycle1;
+	LightCycle cycle2;
+	final int WORLDSIZE = 20;               // 20x20 grid
 
 	final int FORWARD = Input.Keys.W;
 	final int BACK = Input.Keys.S;
@@ -35,8 +33,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	final int EAST = 1;
 	final int SOUTH = 2;
 	final int WEST = 3;
-
-	private boolean TURNRIGHT = false;
 
 	@Override
 	public void create()
@@ -75,68 +71,24 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		//cam = new Camera(new Point3D(0, 3.5f, 0), new Point3D(19.0f, 0.0f, 1.0f), new Vector3D(0.0f, 1.0f, 0.0f));
 
 		gl11 = Gdx.gl11;
-		lightCycle1 = new LightCycle(1.0f, 2.0f, 1.0f, NORTH);
-		lightCycle2 = new LightCycle(18.0f, 2.0f, 18.0f, SOUTH);
-//		drawFloor(20);
-//		lightCycle1.draw(startPositionX1, startPositionZ1);
-//		lightCycle1.draw();
+		cycle1 = new LightCycle(1.0f, 2.0f, 1.0f, NORTH);
+		cycle2 = new LightCycle(18.0f, 2.0f, 18.0f, SOUTH);
 	}
 
 	@Override
-	public void dispose() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
-/*
-	private void movePlayer(int direction)
+	public void dispose()
 	{
-
-		//cam.slide(0.0f, 0.0f, -10.0f * deltaTime);
-		if(direction == FORWARD)
-		{
-			if(lightCycle1.direction == NORTH)
-			{
-//				position1.x = cam.eye.x+5;
-//				position1.z = cam.eye.z;
-			}
-			else if(lightCycle1.direction == EAST)
-			{
-			}
-		}
-		if(direction == BACK)
-		{
-//			position1.x = cam.eye.x+3;
-//			position1.z = cam.eye.z;
-		}
-		if(direction == LEFT)
-		{
-			if(lightCycle1.direction == NORTH)
-				lightCycle1.direction = WEST;
-			else
-				lightCycle1.direction -= 1;
-//			cam.eye.x = position1.x;
-//			cam.eye.z = position1.z+3;
-//			cam.yaw(-90.0f);
-		}
-		if(direction == RIGHT)
-		{
-			if(lightCycle1.direction == WEST)
-				lightCycle1.direction = NORTH;
-			else
-				lightCycle1.direction += 1;
-//			cam.eye.x = position1.x;
-//			cam.eye.z = position1.z-3;
-//			cam.yaw(90.0f);
-		}
+		// TODO Auto-generated method stub
 	}
-*/
-	private void update() {
+
+	@Override
+	public void pause()
+	{
+		// TODO Auto-generated method stub
+	}
+
+	private void update()
+	{
 		
 		if(this.wiggleLights)
 		{
@@ -151,34 +103,34 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		
 		float deltaTime = Gdx.graphics.getDeltaTime();
 
-		switch (lightCycle1.direction)
+		switch (cycle1.direction)                       // check what direction the cycle is facing
 		{
 			case NORTH:
-				lightCycle1.position.x += deltaTime*1;
+				cycle1.pos.x += deltaTime*1;            // move forwards on the x-axis
 				break;
 			case EAST:
-				lightCycle1.position.z += deltaTime*1;
+				cycle1.pos.z += deltaTime*1;            // move forwards on the z-axis
 				break;
 			case SOUTH:
-				lightCycle1.position.x -= deltaTime*1;
+				cycle1.pos.x -= deltaTime*1;            // move backwards on the x-axis
 				break;
 			case WEST:
-				lightCycle1.position.z -= deltaTime*1;
+				cycle1.pos.z -= deltaTime*1;            // move backwards on the z-axis
 				break;
 		}
-		switch (lightCycle2.direction)
+		switch (cycle2.direction)
 		{
 			case NORTH:
-				lightCycle2.position.x += deltaTime*1;
+				cycle2.pos.x += deltaTime*1;
 				break;
 			case EAST:
-				lightCycle2.position.z += deltaTime*1;
+				cycle2.pos.z += deltaTime*1;
 				break;
 			case SOUTH:
-				lightCycle2.position.x -= deltaTime*1;
+				cycle2.pos.x -= deltaTime*1;
 				break;
 			case WEST:
-				lightCycle2.position.z -= deltaTime*1;
+				cycle2.pos.z -= deltaTime*1;
 				break;
 		}
 
@@ -198,8 +150,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		{
 			movePlayer(FORWARD);
 //			cam.slide(0.0f, 0.0f, -10.0f * deltaTime);
-		//	playerPositionX1 = cam.eye.x+2.0f;
-		//	playerPositionZ1 = cam.eye.z;
+		//	playerposX1 = cam.eye.x+2.0f;
+		//	playerposZ1 = cam.eye.z;
 		}
 */
 /*
@@ -231,7 +183,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 //			cam.slide(0.0f, -10.0f * deltaTime, 0.0f);
 	}
 	
-	private void drawBox() {
+	private void drawBox()
+	{
 		Gdx.gl11.glNormal3f(0.0f, 0.0f, -1.0f);
 		Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
 		Gdx.gl11.glNormal3f(1.0f, 0.0f, 0.0f);
@@ -246,12 +199,13 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 20, 4);
 	}
 	
-	private void drawFloor() {
+	private void drawFloor()
+	{
 		for(float fx = 0.0f; fx < WORLDSIZE; fx += 1.0) {
 			for(float fz = 0.0f; fz < WORLDSIZE; fz += 1.0) {
 				Gdx.gl11.glPushMatrix();
 				Gdx.gl11.glTranslatef(fx, 1.0f, fz);
-				Gdx.gl11.glScalef(1.0f, 1.0f, 1.0f);
+				Gdx.gl11.glScalef(0.9f, 1.0f, 0.9f);
 				drawBox();
 				Gdx.gl11.glPopMatrix();
 			}
@@ -285,56 +239,55 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		Gdx.gl11.glViewport(0, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
 		Gdx.gl11.glMatrixMode(GL11.GL_MODELVIEW);
 		Gdx.gl11.glLoadIdentity();
-		switch (lightCycle1.direction)
+		switch (cycle1.direction)
 		{
 			case NORTH:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle1.position.x-2.5f, 3.0f, lightCycle1.position.z, lightCycle1.position.x+2, 0.0f, lightCycle1.position.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x-2.5f, 3.0f, cycle1.pos.z, cycle1.pos.x+2, 0.0f, cycle1.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 			case EAST:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle1.position.x, 3.0f, lightCycle1.position.z-2.5f, lightCycle1.position.x, 0.0f, lightCycle1.position.z+2, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x, 3.0f, cycle1.pos.z-2.5f, cycle1.pos.x, 0.0f, cycle1.pos.z+2, 0.0f, 1.0f, 0.0f);
 				break;
 			case SOUTH:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle1.position.x+2.5f, 3.0f, lightCycle1.position.z, lightCycle1.position.x-2, 0.0f, lightCycle1.position.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x+2.5f, 3.0f, cycle1.pos.z, cycle1.pos.x-2, 0.0f, cycle1.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 			case WEST:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle1.position.x, 3.0f, lightCycle1.position.z+2.5f, lightCycle1.position.x, 0.0f, lightCycle1.position.z-2, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x, 3.0f, cycle1.pos.z+2.5f, cycle1.pos.x, 0.0f, cycle1.pos.z-2, 0.0f, 1.0f, 0.0f);
 				break;
 			default:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle1.position.x, 3.0f, lightCycle1.position.z-2.5f, lightCycle1.position.x, 0.0f, lightCycle1.position.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x, 3.0f, cycle1.pos.z-2.5f, cycle1.pos.x, 0.0f, cycle1.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 		}
-		// Draw floor!
+	// Draw floor!
 		drawFloor();
-		lightCycle1.draw();
-		lightCycle2.draw();
+		cycle1.draw();
+		cycle2.draw();
 
 	//Draw scene 2
 		Gdx.gl11.glViewport(Gdx.graphics.getWidth() / 2, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
 		Gdx.gl11.glMatrixMode(GL11.GL_MODELVIEW);
 		Gdx.gl11.glLoadIdentity();
-		switch (lightCycle2.direction)
+		switch (cycle2.direction)
 		{
 			case NORTH:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle2.position.x-2.5f, 3.0f, lightCycle2.position.z, lightCycle2.position.x+2, 0.0f, lightCycle2.position.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x-2.5f, 3.0f, cycle2.pos.z, cycle2.pos.x+2, 0.0f, cycle2.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 			case EAST:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle2.position.x, 3.0f, lightCycle2.position.z-2.5f, lightCycle2.position.x, 0.0f, lightCycle2.position.z+2, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x, 3.0f, cycle2.pos.z-2.5f, cycle2.pos.x, 0.0f, cycle2.pos.z+2, 0.0f, 1.0f, 0.0f);
 				break;
 			case SOUTH:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle2.position.x+2.5f, 3.0f, lightCycle2.position.z, lightCycle2.position.x-2, 0.0f, lightCycle2.position.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x+2.5f, 3.0f, cycle2.pos.z, cycle2.pos.x-2, 0.0f, cycle2.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 			case WEST:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle2.position.x, 3.0f, lightCycle2.position.z+2.5f, lightCycle2.position.x, 0.0f, lightCycle2.position.z-2, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x, 3.0f, cycle2.pos.z+2.5f, cycle2.pos.x, 0.0f, cycle2.pos.z-2, 0.0f, 1.0f, 0.0f);
 				break;
 			default:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle2.position.x, 3.0f, lightCycle2.position.z-2.5f, lightCycle2.position.x, 0.0f, lightCycle2.position.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x, 3.0f, cycle2.pos.z-2.5f, cycle2.pos.x, 0.0f, cycle2.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 		}
-//		Gdx.glu.gluLookAt(Gdx.gl11, lightCycle2.position.x+2.5f, 3.0f, lightCycle2.position.z, lightCycle2.position.x-2, 0.0f, lightCycle2.position.z, 0.0f, 1.0f, 0.0f);
 
 		drawFloor();
-		lightCycle1.draw();
-		lightCycle2.draw();
+		cycle1.draw();
+		cycle2.draw();
 	}
 
 	@Override
@@ -371,19 +324,19 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		{
 			case Input.Keys.D:
 				System.out.println("P1 TURN RIGHT");
-				lightCycle1.movePlayer(RIGHT1);
+				cycle1.movePlayer(RIGHT1);
 				break;
 			case Input.Keys.A:
 				System.out.println("P1 TURN LEFT");
-				lightCycle1.movePlayer(LEFT1);
+				cycle1.movePlayer(LEFT1);
 				break;
 			case Input.Keys.RIGHT:
 				System.out.println("P2 TURN RIGHT");
-				lightCycle2.movePlayer(RIGHT2);
+				cycle2.movePlayer(RIGHT2);
 				break;
 			case Input.Keys.LEFT:
 				System.out.println("P2 TURN LEFT");
-				lightCycle2.movePlayer(LEFT2);
+				cycle2.movePlayer(LEFT2);
 				break;
 			case Input.Keys.L:
 				this.ligthBulbState = this.ligthBulbState ? false:true;

@@ -291,13 +291,13 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle1.position.x-2.5f, 3.0f, lightCycle1.position.z, lightCycle1.position.x+2, 0.0f, lightCycle1.position.z, 0.0f, 1.0f, 0.0f);
 				break;
 			case EAST:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle1.position.x, 3.0f, lightCycle1.position.z-2.5f, lightCycle1.position.x, 0.0f, lightCycle1.position.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle1.position.x, 3.0f, lightCycle1.position.z-2.5f, lightCycle1.position.x, 0.0f, lightCycle1.position.z+2, 0.0f, 1.0f, 0.0f);
 				break;
 			case SOUTH:
 				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle1.position.x+2.5f, 3.0f, lightCycle1.position.z, lightCycle1.position.x-2, 0.0f, lightCycle1.position.z, 0.0f, 1.0f, 0.0f);
 				break;
 			case WEST:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle1.position.x, 3.0f, lightCycle1.position.z+2.5f, lightCycle1.position.x, 0.0f, lightCycle1.position.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle1.position.x, 3.0f, lightCycle1.position.z+2.5f, lightCycle1.position.x, 0.0f, lightCycle1.position.z-2, 0.0f, 1.0f, 0.0f);
 				break;
 			default:
 				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle1.position.x, 3.0f, lightCycle1.position.z-2.5f, lightCycle1.position.x, 0.0f, lightCycle1.position.z, 0.0f, 1.0f, 0.0f);
@@ -318,13 +318,13 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle2.position.x-2.5f, 3.0f, lightCycle2.position.z, lightCycle2.position.x+2, 0.0f, lightCycle2.position.z, 0.0f, 1.0f, 0.0f);
 				break;
 			case EAST:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle2.position.x, 3.0f, lightCycle2.position.z-2.5f, lightCycle2.position.x, 0.0f, lightCycle2.position.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle2.position.x, 3.0f, lightCycle2.position.z-2.5f, lightCycle2.position.x, 0.0f, lightCycle2.position.z+2, 0.0f, 1.0f, 0.0f);
 				break;
 			case SOUTH:
 				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle2.position.x+2.5f, 3.0f, lightCycle2.position.z, lightCycle2.position.x-2, 0.0f, lightCycle2.position.z, 0.0f, 1.0f, 0.0f);
 				break;
 			case WEST:
-				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle2.position.x, 3.0f, lightCycle2.position.z+2.5f, lightCycle2.position.x, 0.0f, lightCycle2.position.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle2.position.x, 3.0f, lightCycle2.position.z+2.5f, lightCycle2.position.x, 0.0f, lightCycle2.position.z-2, 0.0f, 1.0f, 0.0f);
 				break;
 			default:
 				Gdx.glu.gluLookAt(Gdx.gl11, lightCycle2.position.x, 3.0f, lightCycle2.position.z-2.5f, lightCycle2.position.x, 0.0f, lightCycle2.position.z, 0.0f, 1.0f, 0.0f);

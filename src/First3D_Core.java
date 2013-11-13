@@ -21,6 +21,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	LightCycle cycle1;
 	LightCycle cycle2;
 	final int WORLDSIZE = 20;               // 20x20 grid
+	final int SPEED = 2;
 
 	final int FORWARD = Input.Keys.W;
 	final int BACK = Input.Keys.S;
@@ -106,31 +107,31 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		switch (cycle1.direction)                       // check what direction the cycle is facing
 		{
 			case NORTH:
-				cycle1.pos.x += deltaTime*1;            // move forwards on the x-axis
+				cycle1.pos.x += deltaTime*SPEED;            // move forwards on the x-axis
 				break;
 			case EAST:
-				cycle1.pos.z += deltaTime*1;            // move forwards on the z-axis
+				cycle1.pos.z += deltaTime*SPEED;            // move forwards on the z-axis
 				break;
 			case SOUTH:
-				cycle1.pos.x -= deltaTime*1;            // move backwards on the x-axis
+				cycle1.pos.x -= deltaTime*SPEED;            // move backwards on the x-axis
 				break;
 			case WEST:
-				cycle1.pos.z -= deltaTime*1;            // move backwards on the z-axis
+				cycle1.pos.z -= deltaTime*SPEED;            // move backwards on the z-axis
 				break;
 		}
 		switch (cycle2.direction)
 		{
 			case NORTH:
-				cycle2.pos.x += deltaTime*1;
+				cycle2.pos.x += deltaTime*SPEED;
 				break;
 			case EAST:
-				cycle2.pos.z += deltaTime*1;
+				cycle2.pos.z += deltaTime*SPEED;
 				break;
 			case SOUTH:
-				cycle2.pos.x -= deltaTime*1;
+				cycle2.pos.x -= deltaTime*SPEED;
 				break;
 			case WEST:
-				cycle2.pos.z -= deltaTime*1;
+				cycle2.pos.z -= deltaTime*SPEED;
 				break;
 		}
 
@@ -205,7 +206,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 			for(float fz = 0.0f; fz < WORLDSIZE; fz += 1.0) {
 				Gdx.gl11.glPushMatrix();
 				Gdx.gl11.glTranslatef(fx, 1.0f, fz);
-				Gdx.gl11.glScalef(0.9f, 1.0f, 0.9f);
+				Gdx.gl11.glScalef(0.97f, 1.0f, 0.97f);
 				drawBox();
 				Gdx.gl11.glPopMatrix();
 			}
@@ -236,7 +237,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse, 0);
 
 	//Draw scene 1
-		Gdx.gl11.glViewport(0, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
+//		Gdx.gl11.glViewport(0, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight));                                // Vertical split
+		Gdx.gl11.glViewport(0, Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2);    // Horizontal split
 		Gdx.gl11.glMatrixMode(GL11.GL_MODELVIEW);
 		Gdx.gl11.glLoadIdentity();
 		switch (cycle1.direction)
@@ -263,7 +265,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		cycle2.draw();
 
 	//Draw scene 2
-		Gdx.gl11.glViewport(Gdx.graphics.getWidth() / 2, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
+//		Gdx.gl11.glViewport(Gdx.graphics.getWidth() / 2, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight()); // Vertical
+		Gdx.gl11.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2);                           // Horizontal
 		Gdx.gl11.glMatrixMode(GL11.GL_MODELVIEW);
 		Gdx.gl11.glLoadIdentity();
 		switch (cycle2.direction)
@@ -298,21 +301,23 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	}
 
 	@Override
-	public void resize(int arg0, int arg1) {
-	}
+	public void resize(int arg0, int arg1)
+	{}
 
 	@Override
-	public void resume() {
-	}
+	public void resume()
+	{}
 
 	@Override
-	public boolean keyDown(int arg0) {
+	public boolean keyDown(int arg0)
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean keyTyped(char arg0) {
+	public boolean keyTyped(char arg0)
+	{
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -323,19 +328,15 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		switch (arg0)
 		{
 			case Input.Keys.D:
-				System.out.println("P1 TURN RIGHT");
 				cycle1.movePlayer(RIGHT1);
 				break;
 			case Input.Keys.A:
-				System.out.println("P1 TURN LEFT");
 				cycle1.movePlayer(LEFT1);
 				break;
 			case Input.Keys.RIGHT:
-				System.out.println("P2 TURN RIGHT");
 				cycle2.movePlayer(RIGHT2);
 				break;
 			case Input.Keys.LEFT:
-				System.out.println("P2 TURN LEFT");
 				cycle2.movePlayer(LEFT2);
 				break;
 			case Input.Keys.L:

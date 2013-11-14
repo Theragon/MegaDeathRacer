@@ -21,11 +21,11 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	LightCycle cycle1;
 	LightCycle cycle2;
 	static final int WORLDSIZE = 20;               // 20x20 grid
-	static final int SPEED = 2;
-	private int state = 1;
+	static final byte SPEED = 2;
+	private byte state = 1;
 
-	static final int FORWARD = Input.Keys.W;
-	static final int BACK = Input.Keys.S;
+//	static final int FORWARD = Input.Keys.W;
+//	static final int BACK = Input.Keys.S;
 	static final int RIGHT1 = Input.Keys.D;
 	static final int LEFT1 = Input.Keys.A;
 	static final int RIGHT2 = Input.Keys.RIGHT;
@@ -36,8 +36,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	static final byte SOUTH = 2;
 	static final byte WEST = 3;
 
-	static final int PAUSE = 0;
-	static final int RUNNING = 1;
+	static final byte PAUSE = 0;
+	static final byte RUNNING = 1;
 
 	@Override
 	public void create()
@@ -185,6 +185,16 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 			}
 		}
 	}
+
+	private void drawNorthWall(float x, float y, float z, float angle)
+	{
+		Gdx.gl11.glPushMatrix();
+		Gdx.gl11.glTranslatef(x, 1.0f, z);
+		Gdx.gl11.glScalef(0.1f, 2.0f, 0.97f);
+		Gdx.gl11.glRotatef(-90, 1.0f, 0.0f, 0.0f);
+		drawBox();
+		Gdx.gl11.glPopMatrix();
+	}
 	
 	private void display()
 	{
@@ -236,6 +246,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		drawFloor();
 		cycle1.draw();
 		cycle2.draw();
+		drawNorthWall(0, 0, 0, 0);
 
 	//Draw scene 2
 //		Gdx.gl11.glViewport(Gdx.graphics.getWidth() / 2, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight()); // Vertical

@@ -20,20 +20,24 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 	LightCycle cycle1;
 	LightCycle cycle2;
-	final int WORLDSIZE = 20;               // 20x20 grid
-	final int SPEED = 2;
+	static final int WORLDSIZE = 20;               // 20x20 grid
+	static final int SPEED = 2;
+	private int state = 1;
 
-	final int FORWARD = Input.Keys.W;
-	final int BACK = Input.Keys.S;
-	final int RIGHT1 = Input.Keys.D;
-	final int LEFT1 = Input.Keys.A;
-	final int RIGHT2 = Input.Keys.RIGHT;
-	final int LEFT2 = Input.Keys.LEFT;
+	static final int FORWARD = Input.Keys.W;
+	static final int BACK = Input.Keys.S;
+	static final int RIGHT1 = Input.Keys.D;
+	static final int LEFT1 = Input.Keys.A;
+	static final int RIGHT2 = Input.Keys.RIGHT;
+	static final int LEFT2 = Input.Keys.LEFT;
 
-	final int NORTH = 0;
-	final int EAST = 1;
-	final int SOUTH = 2;
-	final int WEST = 3;
+	static final byte NORTH = 0;
+	static final byte EAST = 1;
+	static final byte SOUTH = 2;
+	static final byte WEST = 3;
+
+	static final int PAUSE = 0;
+	static final int RUNNING = 1;
 
 	@Override
 	public void create()
@@ -88,23 +92,25 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		// TODO Auto-generated method stub
 	}
 
-	private void update()
+	private void updatePause()
+	{}
+
+	private void updateRunning()
 	{
-		
 		if(this.wiggleLights)
 		{
 			count += 0.03;
 			this.wiggleValue = (float) Math.sin(count) * 10;
 		}
-		
+
 		if(this.ligthBulbState)
 			Gdx.gl11.glEnable(GL11.GL_LIGHT0);
 		else
 			Gdx.gl11.glDisable(GL11.GL_LIGHT0);
-		
+
 		float deltaTime = Gdx.graphics.getDeltaTime();
 
-		switch (cycle1.direction)                       // check what direction the cycle is facing
+		switch (cycle1.direction)                           // check what direction the cycle is facing
 		{
 			case NORTH:
 				cycle1.pos.x += deltaTime*SPEED;            // move forwards on the x-axis
@@ -134,54 +140,21 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				cycle2.pos.z -= deltaTime*SPEED;
 				break;
 		}
+	}
 
-//		if(Gdx.input.isKeyPressed(Input.Keys.UP))
-//			cam.pitch(-90.0f * deltaTime);
-		
-//		if(Gdx.input.isKeyPressed(Input.Keys.DOWN))
-//			cam.pitch(90.0f * deltaTime);
-		
-//		if(Gdx.input.isKeyPressed(Input.Keys.LEFT))
-//			cam.yaw(-90.0f * deltaTime);
-		
-//		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
-//			cam.yaw(90.0f * deltaTime);
-		
-/*		if(Gdx.input.isKeyPressed(Input.Keys.W))
+	private void update()
+	{
+		switch(state)
 		{
-			movePlayer(FORWARD);
-//			cam.slide(0.0f, 0.0f, -10.0f * deltaTime);
-		//	playerposX1 = cam.eye.x+2.0f;
-		//	playerposZ1 = cam.eye.z;
+			case RUNNING:
+				updateRunning();
+				break;
+			case PAUSE:
+				updatePause();
+				break;
+			default:
+				break;
 		}
-*/
-/*
-		if(Gdx.input.isKeyPressed(Input.Keys.S))
-		{
-			movePlayer(BACK);
-//			cam.slide(0.0f, 0.0f, 10.0f * deltaTime);
-			//playerPositionX1 = cam.eye.x+2.0f;
-			//playerPositionZ1 = cam.eye.z;
-		}
-*/
-/*
-		if(Gdx.input.isKeyPressed(Input.Keys.A))
-		{
-			//cam.slide(-10.0f * deltaTime, 0.0f, 0.0f);
-			movePlayer(LEFT);
-		}
-
-		if(Gdx.input.isKeyPressed(Input.Keys.D))
-		{
-			//cam.slide(10.0f * deltaTime, 0.0f, 0.0f);
-			movePlayer(RIGHT);
-		}
-*/
-		if(Gdx.input.isKeyPressed(Input.Keys.R))
-//			cam.slide(0.0f, 10.0f * deltaTime, 0.0f);
-		
-		if(Gdx.input.isKeyPressed(Input.Keys.F)){}
-//			cam.slide(0.0f, -10.0f * deltaTime, 0.0f);
 	}
 	
 	private void drawBox()
@@ -325,19 +298,23 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	@Override
 	public boolean keyUp(int arg0)
 	{
-		switch (arg0)
+		switch (arg0)                       // Check what key was released
 		{
-			case Input.Keys.D:
+			case RIGHT1:                    // Player 1 right turn
 				cycle1.movePlayer(RIGHT1);
 				break;
-			case Input.Keys.A:
+			case LEFT1:                     // Player 1 left turn
 				cycle1.movePlayer(LEFT1);
 				break;
-			case Input.Keys.RIGHT:
+			case RIGHT2:                    // Player 2 right turn
 				cycle2.movePlayer(RIGHT2);
 				break;
-			case Input.Keys.LEFT:
+			case LEFT2:                     // Player 2 lef turn
 				cycle2.movePlayer(LEFT2);
+				break;
+			case Input.Keys.P:
+				if(state == PAUSE) state = RUNNING;
+				else if(state == RUNNING) state = PAUSE;
 				break;
 			case Input.Keys.L:
 				this.ligthBulbState = this.ligthBulbState ? false:true;
@@ -346,7 +323,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				this.wiggleLights = this.wiggleLights ? false:true;
 				break;
 			default:
-				System.out.println("default case");
 				break;
 		}
 		/*if(arg0 == Input.Keys.L){

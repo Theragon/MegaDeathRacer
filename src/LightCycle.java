@@ -18,16 +18,16 @@ public class LightCycle {
 
 	FloatBuffer vertexBuffer;
 	//FloatBuffer texCoordBuffer;
-	public int direction;
-	final int NORTH = 0;
-	final int EAST = 1;
-	final int SOUTH = 2;
-	final int WEST = 3;
+	public byte direction;
+	final byte NORTH = 0;
+	final byte EAST = 1;
+	final byte SOUTH = 2;
+	final byte WEST = 3;
 	Point3D pos;// = new Point3D(1.0f, 2.0f, 1.0f);
 
 	//Texture tex;
 
-	public LightCycle(/*String textureImage*/ float x, float y, float z, int dir)
+	public LightCycle(/*String textureImage*/ float x, float y, float z, byte dir)
 	{
 		pos = new Point3D(x, y, z);
 		this.pos.x = x;

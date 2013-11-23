@@ -1,6 +1,7 @@
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.utils.BufferUtils;
@@ -40,14 +41,10 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	static final byte PAUSE = 0;
 	static final byte RUNNING = 1;
 
-	private boolean startNorth1 = true;
-	private boolean startEast1 = false;
-
-	Trail trail1;
-	Trail trail2;
-
 	ArrayList<Trail> trails = new ArrayList<Trail>();
 	int trailCount = -1;
+
+	Music music;
 
 	@Override
 	public void create()
@@ -87,12 +84,18 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 		gl11 = Gdx.gl11;
 		cycle1 = new LightCycle(1.0f, 2.0f, 1.0f, NORTH);
+		cycle1.startNorth = true;
 		cycle2 = new LightCycle(18.0f, 2.0f, 18.0f, SOUTH);
+
+		music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/Arena.mp3"));
+		music.play();
 	}
 
 	@Override
 	public void dispose()
 	{
+		music.dispose();
+		System.out.println("DISPOSE");
 		// TODO Auto-generated method stub
 	}
 
@@ -123,37 +126,59 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		switch(cycle1.direction)                            // check what direction cycle 1 is facing
 		{
 			case NORTH:
-				cycle1.pos.x += deltaTime*SPEED;            // move forwards on the x-axis
-				if(startNorth1)
+				if(cycle1.startNorth)
 				{
-					trails.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, 0));
+					trails.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, NORTH));
 					trailCount++;
-//					trail1 = new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z);
-					startNorth1 = false;
+					trails.get(trailCount).start = trails.get(trailCount).x;
+					cycle1.startNorth = false;
 				}
 				else
 				{
 					updateTrail(trails.get(trailCount), cycle1);
 				}
-
+				cycle1.pos.x += deltaTime*SPEED;            // move forwards on the x-axis
 				break;
 			case EAST:
-				cycle1.pos.z += deltaTime*SPEED;            // move forwards on the z-axis
-				if(startEast1)
+				if(cycle1.startEast)
 				{
-					trails.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, 1));
+					trails.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, EAST));
 					trailCount++;
-					startEast1 = false;
+					trails.get(trailCount).start = cycle1.pos.z;
+					cycle1.startEast = false;
 				}
 				else
 				{
 					updateTrail(trails.get(trailCount), cycle1);
 				}
+				cycle1.pos.z += deltaTime*SPEED;            // move forwards on the z-axis
 				break;
 			case SOUTH:
+				if(cycle1.startSouth)
+				{
+					trails.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, SOUTH));
+					trailCount++;
+					trails.get(trailCount).start = cycle1.pos.x;
+					cycle1.startSouth = false;
+				}
+				else
+				{
+					updateTrail(trails.get(trailCount), cycle1);
+				}
 				cycle1.pos.x -= deltaTime*SPEED;            // move backwards on the x-axis
 				break;
 			case WEST:
+				if(cycle1.startWest)
+				{
+					trails.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, WEST));
+					trailCount++;
+					trails.get(trailCount).start = cycle1.pos.z;
+					cycle1.startWest = false;
+				}
+				else
+				{
+					updateTrail(trails.get(trailCount), cycle1);
+				}
 				cycle1.pos.z -= deltaTime*SPEED;            // move backwards on the z-axis
 				break;
 		}
@@ -305,46 +330,68 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 //		scaleTrail(trail1.x, trail1.y, trail1.z, cycle1.pos.x, cycle1.pos.y, cycle1.pos.z);
 	}
 
-	private void scaleTrail(float tx, float ty, float tz, float cx, float cy, float cz)
-	{
-		trail1.scale = (float)Math.floor(cx);
-		Gdx.gl11.glPushMatrix();
-		Gdx.gl11.glTranslatef(((tx+trail1.scale)/2)-1.5f, cy, cz);
-		Gdx.gl11.glScalef(trail1.scale, 1.0f, 0.1f);
-		//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
-		drawBox();
-		Gdx.gl11.glPopMatrix();
-	}
-
 	private void updateTrail(Trail trail, LightCycle cycle)
 	{
-		if(trail.direction == 0)
-			trail.scale = (cycle.pos.x);
-		else if(trail.direction == 1)
-			trail.scale = (cycle.pos.z);
+		switch (trail.direction)
+		{
+			case NORTH:
+				trail.end = cycle.pos.x;
+				break;
+
+			case EAST:
+				trail.end = cycle.pos.z;
+				break;
+
+			case SOUTH:
+				trail.end = cycle.pos.x;
+				break;
+
+			case WEST:
+				trail.end = cycle.pos.z;
+		}
 	}
 
 	private void drawTrail()
 	{
 		for(Trail trail : trails)
 		{
-			if(trail.direction == 0)
+			switch (trail.direction)
 			{
-				Gdx.gl11.glPushMatrix();
-				Gdx.gl11.glTranslatef(((trail.x+trail.scale)/2), 2.0f, trail.z);
-				Gdx.gl11.glScalef(trail.scale, 1.0f, 0.1f);
-				//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
-				drawBox();
-				Gdx.gl11.glPopMatrix();
-			}
-			else if(trail.direction == 1)
-			{
-				Gdx.gl11.glPushMatrix();
-				Gdx.gl11.glTranslatef(trail.x, 2.0f, ((trail.z+trail.scale)/2));
-				Gdx.gl11.glScalef(0.1f, 1.0f, trail.scale);
-				//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
-				drawBox();
-				Gdx.gl11.glPopMatrix();
+				case NORTH:
+					Gdx.gl11.glPushMatrix();
+					Gdx.gl11.glTranslatef(((trail.start+trail.end)/2)+0.375f, 2.0f, trail.z);
+					Gdx.gl11.glScalef(trail.end-trail.start+0.375f, 1.0f, 0.1f);
+					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
+					drawBox();
+					Gdx.gl11.glPopMatrix();
+					break;
+
+				case EAST:
+					Gdx.gl11.glPushMatrix();
+					Gdx.gl11.glTranslatef(trail.x, 2.0f, ((trail.start+trail.end)/2)+0.375f);
+					Gdx.gl11.glScalef(0.1f, 1.0f, trail.end-trail.start+0.375f);
+					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
+					drawBox();
+					Gdx.gl11.glPopMatrix();
+					break;
+
+				case SOUTH:
+					Gdx.gl11.glPushMatrix();
+					Gdx.gl11.glTranslatef(((trail.start+trail.end)/2)-0.375f, 2.0f, trail.z);
+					Gdx.gl11.glScalef(trail.end-trail.start+0.375f, 1.0f, 0.1f);
+					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
+					drawBox();
+					Gdx.gl11.glPopMatrix();
+					break;
+
+				case WEST:
+					Gdx.gl11.glPushMatrix();
+					Gdx.gl11.glTranslatef(trail.x, 2.0f, ((trail.start+trail.end)/2)+0.25f);
+					Gdx.gl11.glScalef(0.1f, 1.0f, trail.end-trail.start);
+					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
+					drawBox();
+					Gdx.gl11.glPopMatrix();
+					break;
 			}
 		}
 	}
@@ -385,7 +432,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		{
 			case RIGHT1:                    // Player 1 right turn
 				cycle1.movePlayer(RIGHT1);
-				startEast1 = true;
 				break;
 			case LEFT1:                     // Player 1 left turn
 				cycle1.movePlayer(LEFT1);
@@ -393,10 +439,10 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 			case RIGHT2:                    // Player 2 right turn
 				cycle2.movePlayer(RIGHT2);
 				break;
-			case LEFT2:                     // Player 2 lef turn
+			case LEFT2:                     // Player 2 left turn
 				cycle2.movePlayer(LEFT2);
 				break;
-			case Input.Keys.P:
+			case Input.Keys.P:              // Pause game
 				if(state == PAUSE) state = RUNNING;
 				else if(state == RUNNING) state = PAUSE;
 				break;

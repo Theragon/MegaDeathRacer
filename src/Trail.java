@@ -12,6 +12,8 @@ public class Trail
 	public float z;
 	public float scale;
 	public int direction;
+	public float start;
+	public float end;
 
 	public Trail(float x, float y, float z, int direction)
 	{

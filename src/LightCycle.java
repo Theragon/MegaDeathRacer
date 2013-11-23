@@ -24,6 +24,10 @@ public class LightCycle {
 	final byte SOUTH = 2;
 	final byte WEST = 3;
 	Point3D pos;// = new Point3D(1.0f, 2.0f, 1.0f);
+	public boolean startNorth;
+	public boolean startEast;
+	public boolean startSouth;
+	public boolean startWest;
 
 	//Texture tex;
 
@@ -113,7 +117,9 @@ public class LightCycle {
 		{
 			case Input.Keys.D:
 				if(this.direction == WEST)
+				{
 					this.direction = NORTH;
+				}
 				else
 					this.direction += 1;
 				break;
@@ -136,6 +142,23 @@ public class LightCycle {
 				else
 					this.direction += 1;
 				break;
+		}
+
+		if(this.direction == NORTH)
+		{
+			startNorth = true;
+		}
+		else if(this.direction == EAST)
+		{
+			startEast = true;
+		}
+		else if(this.direction == SOUTH)
+		{
+			startSouth = true;
+		}
+		else if(this.direction == WEST)
+		{
+			startWest = true;
 		}
 	}
 }

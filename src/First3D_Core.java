@@ -132,6 +132,15 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 					trailCount++;
 					trails.get(trailCount).start = trails.get(trailCount).x;
 					cycle1.startNorth = false;
+                    if(trailCount > 0)
+                    {
+                        if(trails.get(trailCount-1).direction == EAST)
+                        {
+                            System.out.println(trails.get(trailCount-1).end);
+                            trails.get(trailCount-1).end = trails.get(trailCount-1).end + 0.381f;
+                        }
+
+                    }
 				}
 				else
 				{
@@ -142,10 +151,20 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 			case EAST:
 				if(cycle1.startEast)
 				{
-					trails.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, EAST));
+					trails.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z - 0.8f, EAST));
 					trailCount++;
 					trails.get(trailCount).start = cycle1.pos.z;
 					cycle1.startEast = false;
+                    System.out.println(trailCount);
+                    if(trailCount > 0)
+                    {
+                        if(trails.get(trailCount-1).direction == NORTH)
+                        {
+                            System.out.println(trails.get(trailCount-1).end);
+                            trails.get(trailCount-1).end = trails.get(trailCount-1).end + 0.381f;
+                        }
+
+                    }
 				}
 				else
 				{
@@ -359,8 +378,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 			{
 				case NORTH:
 					Gdx.gl11.glPushMatrix();
-					Gdx.gl11.glTranslatef(((trail.start+trail.end)/2)+0.375f, 2.0f, trail.z);
-					Gdx.gl11.glScalef(trail.end-trail.start+0.375f, 1.0f, 0.1f);
+					Gdx.gl11.glTranslatef(((trail.start+trail.end)/2), 2.0f, trail.z);
+					Gdx.gl11.glScalef(trail.end-trail.start, 1.0f, 0.1f);
 					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
 					drawBox();
 					Gdx.gl11.glPopMatrix();
@@ -368,8 +387,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 				case EAST:
 					Gdx.gl11.glPushMatrix();
-					Gdx.gl11.glTranslatef(trail.x, 2.0f, ((trail.start+trail.end)/2)+0.375f);
-					Gdx.gl11.glScalef(0.1f, 1.0f, trail.end-trail.start+0.375f);
+					Gdx.gl11.glTranslatef(trail.x, 2.0f, ((trail.start+trail.end)/2));
+					Gdx.gl11.glScalef(0.1f, 1.0f, trail.end-trail.start);
 					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
 					drawBox();
 					Gdx.gl11.glPopMatrix();
@@ -377,8 +396,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 				case SOUTH:
 					Gdx.gl11.glPushMatrix();
-					Gdx.gl11.glTranslatef(((trail.start+trail.end)/2)-0.375f, 2.0f, trail.z);
-					Gdx.gl11.glScalef(trail.end-trail.start+0.375f, 1.0f, 0.1f);
+					Gdx.gl11.glTranslatef(((trail.start+trail.end)/2), 2.0f, trail.z);
+					Gdx.gl11.glScalef(trail.end-trail.start, 1.0f, 0.1f);
 					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
 					drawBox();
 					Gdx.gl11.glPopMatrix();
@@ -386,7 +405,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 				case WEST:
 					Gdx.gl11.glPushMatrix();
-					Gdx.gl11.glTranslatef(trail.x, 2.0f, ((trail.start+trail.end)/2)+0.25f);
+					Gdx.gl11.glTranslatef(trail.x, 2.0f, ((trail.start+trail.end)/2));
 					Gdx.gl11.glScalef(0.1f, 1.0f, trail.end-trail.start);
 					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
 					drawBox();

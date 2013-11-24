@@ -29,6 +29,11 @@ public class LightCycle {
 	public boolean startSouth;
 	public boolean startWest;
 
+	public float front;
+	public float back;
+	public float left;
+	public float right;
+
 	//Texture tex;
 
 	public LightCycle(/*String textureImage*/ float x, float y, float z, byte dir)
@@ -38,6 +43,13 @@ public class LightCycle {
 		this.pos.y = y;
 		this.pos.z = z;
 		this.direction = dir;
+
+		/* TEST */
+		this.front = x;
+		this.back = x;
+		this.left = z;
+		this.right = z;
+		/* TEST */
 
 		vertexBuffer = BufferUtils.newFloatBuffer(72);
 		vertexBuffer.put(new float[] {-0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f,
@@ -109,6 +121,34 @@ public class LightCycle {
 
 //		Gdx.gl11.glDisable(GL11.GL_TEXTURE_2D);
 //		Gdx.gl11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
+	}
+
+	public void updatePosition()
+	{
+		switch(this.direction)
+		{
+			case NORTH:
+				this.front = this.pos.x+1;
+				this.back = this.pos.x-1f;
+				this.left = this.pos.z-0.5f;
+				this.right = this.pos.z+0.5f;
+				break;
+
+			case EAST:
+
+				break;
+
+			case SOUTH:
+				this.front = this.pos.x-1;
+				this.back = this.pos.x+1;
+				this.left = this.pos.z+0.5f;
+				this.right = this.pos.z-0.5f;
+				break;
+
+			case WEST:
+
+				break;
+		}
 	}
 
 	public void movePlayer(int direction)

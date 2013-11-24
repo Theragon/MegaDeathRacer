@@ -89,10 +89,10 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		gl11 = Gdx.gl11;
 		cycle1 = new LightCycle(1.0f, 2.0f, 1.0f, NORTH);
 		cycle1.startNorth = true;
-		cycle2 = new LightCycle(18.0f, 2.0f, 18.0f, SOUTH);
+		cycle2 = new LightCycle(38.0f, 2.0f, 38.0f, SOUTH);
 		cycle2.startSouth = true;
 
-		music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/Arena.mp3"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/EndOfLine.mp3"));
 		music.play();
 	}
 
@@ -127,6 +127,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		else Gdx.gl11.glDisable(GL11.GL_LIGHT0);
 
 		float deltaTime = Gdx.graphics.getDeltaTime();
+
+		collisionDetection();
 
 		switch(cycle1.direction)                            // check what direction cycle 1 is facing
 		{
@@ -211,6 +213,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				cycle1.pos.z -= deltaTime*SPEED;            // move backwards on the z-axis
 				break;
 		}
+		cycle1.updatePosition();
+
 		switch(cycle2.direction)                            // check what direction cycle 2 is facing
 		{
 			case NORTH:
@@ -293,6 +297,21 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				}
 				cycle2.pos.z -= deltaTime*SPEED;            // move backwards on the z-axis
 				break;
+		}
+		cycle2.updatePosition();
+	}
+
+	public void collisionDetection()
+	{
+		if(Math.floor(cycle1.pos.x)+1 == Math.floor(cycle2.pos.x)-1)        // Same X position
+		{
+			if(Math.floor(cycle2.pos.z) == Math.floor(cycle1.pos.z))    // Same Z position
+			{
+//				if(Math.floor(cycle1.front) == Math.floor(cycle2.front))    // Head on collision
+				System.out.println("COLLISION");
+				state = PAUSE;
+			}
+
 		}
 	}
 
@@ -394,6 +413,25 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		cycle2.draw();
 		drawTrail(trails1);
 		drawTrail(trails2);
+
+	//Lights
+		// Configure light 0
+		float[] lightDiffuse2 = {1.0f, 1.0f, 1.0f, 1.0f};
+		Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, lightDiffuse2, 0);
+
+		float[] lightPosition2 = {this.wiggleValue, 10.0f, 15.0f, 1.0f};
+		Gdx.gl11.glLightfv(GL11.GL_LIGHT0, GL11.GL_POSITION, lightPosition2, 0);
+
+		// Configure light 1
+		float[] lightDiffuse12 = {0.5f, 0.5f, 0.5f, 1.0f};
+		Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_DIFFUSE, lightDiffuse12, 0);
+
+		float[] lightPosition12 = {-5.0f, -10.0f, -15.0f, 1.0f};
+		Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPosition12, 0);
+
+		// Set material on the cube.
+		float[] materialDiffuse2 = {0.2f, .3f, 0.6f, 1.0f};
+		Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse2, 0);
 
 	//Draw scene 2
 //		Gdx.gl11.glViewport(Gdx.graphics.getWidth() / 2, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight()); // Vertical

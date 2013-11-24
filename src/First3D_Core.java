@@ -1,5 +1,6 @@
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
@@ -41,8 +42,11 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	static final byte PAUSE = 0;
 	static final byte RUNNING = 1;
 
-	ArrayList<Trail> trails = new ArrayList<Trail>();
-	int trailCount = -1;
+	ArrayList<Trail> trails1 = new ArrayList<Trail>();
+	int trailCount1 = -1;
+
+	ArrayList<Trail> trails2 = new ArrayList<Trail>();
+	int trailCount2 = -1;
 
 	Music music;
 
@@ -86,6 +90,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		cycle1 = new LightCycle(1.0f, 2.0f, 1.0f, NORTH);
 		cycle1.startNorth = true;
 		cycle2 = new LightCycle(18.0f, 2.0f, 18.0f, SOUTH);
+		cycle2.startSouth = true;
 
 		music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/Arena.mp3"));
 		music.play();
@@ -128,75 +133,80 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 			case NORTH:
 				if(cycle1.startNorth)
 				{
-					trails.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, NORTH));
-					trailCount++;
-					trails.get(trailCount).start = trails.get(trailCount).x;
+					trails1.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, NORTH));
+					trailCount1++;
+					trails1.get(trailCount1).startx = cycle1.pos.x;
+					trails1.get(trailCount1).startz = cycle1.pos.z;
 					cycle1.startNorth = false;
-                    if(trailCount > 0)
+                    if(trailCount1 > 0)
                     {
-                        if(trails.get(trailCount-1).direction == EAST)
-                        {
-                            System.out.println(trails.get(trailCount-1).end);
-                            trails.get(trailCount-1).end = trails.get(trailCount-1).end + 0.381f;
-                        }
-
+                        trails1.get(trailCount1-1).endx = trails1.get(trailCount1).startx;
+                        trails1.get(trailCount1-1).endz = trails1.get(trailCount1).startz;
                     }
 				}
 				else
 				{
-					updateTrail(trails.get(trailCount), cycle1);
+					updateTrail(trails1.get(trailCount1), cycle1);
 				}
 				cycle1.pos.x += deltaTime*SPEED;            // move forwards on the x-axis
 				break;
 			case EAST:
 				if(cycle1.startEast)
 				{
-					trails.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z - 0.8f, EAST));
-					trailCount++;
-					trails.get(trailCount).start = cycle1.pos.z;
+					trails1.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, EAST));
+					trailCount1++;
+					trails1.get(trailCount1).startx = cycle1.pos.x;
+					trails1.get(trailCount1).startz = cycle1.pos.z;
 					cycle1.startEast = false;
-                    System.out.println(trailCount);
-                    if(trailCount > 0)
+                    if(trailCount1 > 0)
                     {
-                        if(trails.get(trailCount-1).direction == NORTH)
-                        {
-                            System.out.println(trails.get(trailCount-1).end);
-                            trails.get(trailCount-1).end = trails.get(trailCount-1).end + 0.381f;
-                        }
-
+                        trails1.get(trailCount1-1).endx = trails1.get(trailCount1).startx;
+                        trails1.get(trailCount1-1).endz = trails1.get(trailCount1).startz;
                     }
 				}
 				else
 				{
-					updateTrail(trails.get(trailCount), cycle1);
+					updateTrail(trails1.get(trailCount1), cycle1);
 				}
 				cycle1.pos.z += deltaTime*SPEED;            // move forwards on the z-axis
 				break;
 			case SOUTH:
 				if(cycle1.startSouth)
 				{
-					trails.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, SOUTH));
-					trailCount++;
-					trails.get(trailCount).start = cycle1.pos.x;
+					trails1.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, SOUTH));
+					trailCount1++;
+					trails1.get(trailCount1).startx = cycle1.pos.x;
+					trails1.get(trailCount1).startz = cycle1.pos.z;
 					cycle1.startSouth = false;
+					if(trailCount1 > 0)
+					{
+						trails1.get(trailCount1-1).endx = trails1.get(trailCount1).startx;
+						trails1.get(trailCount1-1).endz = trails1.get(trailCount1).startz;
+					}
 				}
 				else
 				{
-					updateTrail(trails.get(trailCount), cycle1);
+					updateTrail(trails1.get(trailCount1), cycle1);
 				}
 				cycle1.pos.x -= deltaTime*SPEED;            // move backwards on the x-axis
 				break;
 			case WEST:
 				if(cycle1.startWest)
 				{
-					trails.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, WEST));
-					trailCount++;
-					trails.get(trailCount).start = cycle1.pos.z;
+					trails1.add(new Trail(cycle1.pos.x, cycle1.pos.y, cycle1.pos.z, WEST));
+					trailCount1++;
+					trails1.get(trailCount1).startx = cycle1.pos.x;
+					trails1.get(trailCount1).startz = cycle1.pos.z;
 					cycle1.startWest = false;
+					if(trailCount1 > 0)
+					{
+						trails1.get(trailCount1-1).endx = trails1.get(trailCount1).startx;
+						trails1.get(trailCount1-1).endz = trails1.get(trailCount1).startz;
+					}
 				}
 				else
 				{
-					updateTrail(trails.get(trailCount), cycle1);
+					updateTrail(trails1.get(trailCount1), cycle1);
 				}
 				cycle1.pos.z -= deltaTime*SPEED;            // move backwards on the z-axis
 				break;
@@ -204,15 +214,83 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		switch(cycle2.direction)                            // check what direction cycle 2 is facing
 		{
 			case NORTH:
+				if(cycle2.startNorth)
+				{
+					trails2.add(new Trail(cycle2.pos.x, cycle2.pos.y, cycle2.pos.z, NORTH));
+					trailCount2++;
+					trails2.get(trailCount2).startx = cycle2.pos.x;
+					trails2.get(trailCount2).startz = cycle2.pos.z;
+					cycle2.startNorth = false;
+					if(trailCount2 > 0)
+					{
+						trails2.get(trailCount2-1).endx = trails2.get(trailCount2).startx;
+						trails2.get(trailCount2-1).endz = trails2.get(trailCount2).startz;
+					}
+				}
+				else
+				{
+					updateTrail(trails2.get(trailCount2), cycle2);
+				}
 				cycle2.pos.x += deltaTime*SPEED;            // move forwards on the x-axis
 				break;
 			case EAST:
+				if(cycle2.startEast)
+				{
+					trails2.add(new Trail(cycle2.pos.x, cycle2.pos.y, cycle2.pos.z, EAST));
+					trailCount2++;
+					trails2.get(trailCount2).startx = cycle2.pos.x;
+					trails2.get(trailCount2).startz = cycle2.pos.z;
+					cycle2.startEast = false;
+					if(trailCount2 > 0)
+					{
+						trails2.get(trailCount2-1).endx = trails2.get(trailCount2).startx;
+						trails2.get(trailCount2-1).endz = trails2.get(trailCount2).startz;
+					}
+				}
+				else
+				{
+					updateTrail(trails2.get(trailCount2), cycle2);
+				}
 				cycle2.pos.z += deltaTime*SPEED;            // move forwards on the z-axis
 				break;
 			case SOUTH:
+				if(cycle2.startSouth)
+				{
+					trails2.add(new Trail(cycle2.pos.x, cycle2.pos.y, cycle2.pos.z, SOUTH));
+					trailCount2++;
+					trails2.get(trailCount2).startx = cycle2.pos.x;
+					trails2.get(trailCount2).startz = cycle2.pos.z;
+					cycle2.startSouth = false;
+					if(trailCount2 > 0)
+					{
+						trails2.get(trailCount2-1).endx = trails2.get(trailCount2).startx;
+						trails2.get(trailCount2-1).endz = trails2.get(trailCount2).startz;
+					}
+				}
+				else
+				{
+					updateTrail(trails2.get(trailCount2), cycle2);
+				}
 				cycle2.pos.x -= deltaTime*SPEED;            // move backwards on the x-axis
 				break;
 			case WEST:
+				if(cycle2.startWest)
+				{
+					trails2.add(new Trail(cycle2.pos.x, cycle2.pos.y, cycle2.pos.z, WEST));
+					trailCount2++;
+					trails2.get(trailCount2).startx = cycle2.pos.x;
+					trails2.get(trailCount2).startz = cycle2.pos.z;
+					cycle2.startWest = false;
+					if(trailCount2 > 0)
+					{
+						trails2.get(trailCount2-1).endx = trails2.get(trailCount2).startx;
+						trails2.get(trailCount2-1).endz = trails2.get(trailCount2).startz;
+					}
+				}
+				else
+				{
+					updateTrail(trails2.get(trailCount2), cycle2);
+				}
 				cycle2.pos.z -= deltaTime*SPEED;            // move backwards on the z-axis
 				break;
 		}
@@ -314,9 +392,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		drawFloor();
 		cycle1.draw();
 		cycle2.draw();
-		drawTrail();
-//		scaleTrail(trail1.x, trail1.y, trail1.z, cycle1.pos.x, cycle1.pos.y, cycle1.pos.z);
-
+		drawTrail(trails1);
+		drawTrail(trails2);
 
 	//Draw scene 2
 //		Gdx.gl11.glViewport(Gdx.graphics.getWidth() / 2, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight()); // Vertical
@@ -345,8 +422,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		drawFloor();
 		cycle1.draw();
 		cycle2.draw();
-		drawTrail();
-//		scaleTrail(trail1.x, trail1.y, trail1.z, cycle1.pos.x, cycle1.pos.y, cycle1.pos.z);
+		drawTrail(trails1);
+		drawTrail(trails2);
 	}
 
 	private void updateTrail(Trail trail, LightCycle cycle)
@@ -355,22 +432,31 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		{
 			case NORTH:
 				trail.end = cycle.pos.x;
+				trail.endx = cycle.pos.x;
+				trail.endz = cycle.pos.z;
 				break;
 
 			case EAST:
 				trail.end = cycle.pos.z;
+				trail.endx = cycle.pos.x;
+				trail.endz = cycle.pos.z;
 				break;
 
 			case SOUTH:
 				trail.end = cycle.pos.x;
+				trail.endx = cycle.pos.x;
+				trail.endz = cycle.pos.z;
 				break;
 
 			case WEST:
 				trail.end = cycle.pos.z;
+				trail.endx = cycle.pos.x;
+				trail.endz = cycle.pos.z;
+				break;
 		}
 	}
 
-	private void drawTrail()
+	private void drawTrail(List<Trail> trails)
 	{
 		for(Trail trail : trails)
 		{
@@ -378,8 +464,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 			{
 				case NORTH:
 					Gdx.gl11.glPushMatrix();
-					Gdx.gl11.glTranslatef(((trail.start+trail.end)/2), 2.0f, trail.z);
-					Gdx.gl11.glScalef(trail.end-trail.start, 1.0f, 0.1f);
+					Gdx.gl11.glTranslatef(((trail.startx+trail.endx)/2), 2.0f, trail.z);
+					Gdx.gl11.glScalef(trail.endx-trail.startx, 1.0f, 0.1f);
 					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
 					drawBox();
 					Gdx.gl11.glPopMatrix();
@@ -387,8 +473,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 				case EAST:
 					Gdx.gl11.glPushMatrix();
-					Gdx.gl11.glTranslatef(trail.x, 2.0f, ((trail.start+trail.end)/2));
-					Gdx.gl11.glScalef(0.1f, 1.0f, trail.end-trail.start);
+					Gdx.gl11.glTranslatef(trail.x, 2.0f, ((trail.startz+trail.endz)/2));
+					Gdx.gl11.glScalef(0.1f, 1.0f, trail.endz-trail.startz);
 					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
 					drawBox();
 					Gdx.gl11.glPopMatrix();
@@ -396,8 +482,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 				case SOUTH:
 					Gdx.gl11.glPushMatrix();
-					Gdx.gl11.glTranslatef(((trail.start+trail.end)/2), 2.0f, trail.z);
-					Gdx.gl11.glScalef(trail.end-trail.start, 1.0f, 0.1f);
+					Gdx.gl11.glTranslatef(((trail.startx+trail.endx)/2), 2.0f, trail.z);
+					Gdx.gl11.glScalef(trail.endx-trail.startx, 1.0f, 0.1f);
 					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
 					drawBox();
 					Gdx.gl11.glPopMatrix();
@@ -405,8 +491,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 				case WEST:
 					Gdx.gl11.glPushMatrix();
-					Gdx.gl11.glTranslatef(trail.x, 2.0f, ((trail.start+trail.end)/2));
-					Gdx.gl11.glScalef(0.1f, 1.0f, trail.end-trail.start);
+					Gdx.gl11.glTranslatef(trail.x, 2.0f, ((trail.startz+trail.endz)/2));
+					Gdx.gl11.glScalef(0.1f, 1.0f, trail.endz-trail.startz);
 					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
 					drawBox();
 					Gdx.gl11.glPopMatrix();

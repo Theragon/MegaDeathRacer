@@ -89,7 +89,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		gl11 = Gdx.gl11;
 		cycle1 = new LightCycle(1.0f, 2.0f, 1.0f, NORTH);
 		cycle1.startNorth = true;
-		cycle2 = new LightCycle(38.0f, 2.0f, 38.0f, SOUTH);
+		cycle2 = new LightCycle(38.0f, 2.0f, 1.0f, SOUTH);
 		cycle2.startSouth = true;
 
 		music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/EndOfLine.mp3"));
@@ -301,15 +301,24 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		cycle2.updatePosition();
 	}
 
+	public void getPosition()
+	{
+		System.out.println("Cycle1: " + (Math.ceil(cycle1.pos.x)+1) + "," + Math.ceil(cycle1.pos.z));
+		System.out.println("Cycle2: " + (Math.ceil(cycle2.pos.x)-1) + "," + Math.ceil(cycle2.pos.z));
+	}
+
 	public void collisionDetection()
 	{
-		if(Math.floor(cycle1.pos.x)+1 == Math.floor(cycle2.pos.x)-1)        // Same X position
+		if(Math.ceil(cycle1.pos.x)+1 == Math.ceil(cycle2.pos.x)-1)        // Same X position
 		{
-			if(Math.floor(cycle2.pos.z) == Math.floor(cycle1.pos.z))    // Same Z position
+			if(Math.ceil(cycle2.pos.z) == Math.ceil(cycle1.pos.z))    // Same Z position
 			{
 //				if(Math.floor(cycle1.front) == Math.floor(cycle2.front))    // Head on collision
-				System.out.println("COLLISION");
-				state = PAUSE;
+				if(cycle1.direction == NORTH && cycle2.direction == SOUTH)
+				{
+					System.out.println("COLLISION");
+					state = PAUSE;
+				}
 			}
 
 		}
@@ -588,6 +597,9 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 			case Input.Keys.P:              // Pause game
 				if(state == PAUSE) state = RUNNING;
 				else if(state == RUNNING) state = PAUSE;
+				break;
+			case Input.Keys.SPACE:
+				getPosition();
 				break;
 			case Input.Keys.L:
 				this.ligthBulbState = this.ligthBulbState ? false:true;

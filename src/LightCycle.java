@@ -44,6 +44,22 @@ public class LightCycle {
 		this.pos.z = z;
 		this.direction = dir;
 
+		switch(this.direction)
+		{
+			case NORTH:
+				startNorth = true;
+				break;
+			case EAST:
+				startEast = true;
+				break;
+			case SOUTH:
+				startSouth = true;
+				break;
+			case WEST:
+				startWest = true;
+				break;
+		}
+
 		/* TEST */
 		this.front = x;
 		this.back = x;

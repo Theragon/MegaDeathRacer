@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.utils.BufferUtils;
@@ -50,6 +51,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 	Music music;
 
+	private FPSLogger fpsLogger;
+
 	@Override
 	public void create()
 	{
@@ -94,6 +97,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 		music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/EndOfLine.mp3"));
 		music.play();
+
+		fpsLogger = new FPSLogger();
 	}
 
 	@Override
@@ -128,7 +133,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 		float deltaTime = Gdx.graphics.getDeltaTime();
 
-		collisionDetection();
+		collisionDetection(cycle1);
+		collisionDetection(cycle2);
 
 		switch(cycle1.direction)                            // check what direction cycle 1 is facing
 		{
@@ -307,30 +313,122 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		System.out.println("Cycle2: " + (Math.ceil(cycle2.pos.x)-1) + "," + Math.ceil(cycle2.pos.z));
 	}
 
-	public void collisionDetection()
+	public void collisionDetection(LightCycle cycle)
 	{
-		// NORTH
-		for(Trail trail : trails1)
+		switch(cycle.direction)
 		{
-			if(trail.startz < cycle1.pos.z && trail.endz > cycle1.pos.z)
-			{
-				if(Math.ceil(cycle1.pos.x)+1 == trail.x)
+			case NORTH:
+				for(Trail trail : trails1)
 				{
-					System.out.println("TRAIL COLLISION");
-					state = PAUSE;
+					if(trail.startz < cycle.pos.z && trail.endz > cycle.pos.z)
+					{
+						if(Math.ceil(cycle.pos.x)+1 == Math.round(trail.x))
+						{
+							System.out.println("TRAIL1 COLLISION NORTH");
+							state = PAUSE;
+						}
+					}
+					if(trail.endz < cycle.pos.z && trail.startz > cycle.pos.z)
+					{
+						if(Math.ceil(cycle.pos.x)+1 == Math.round(trail.x))
+						{
+							System.out.println("TRAIL1 COLLISION NORTH");
+						}
+					}
 				}
-			}
-		}
-		for(Trail trail : trails2)
-		{
-			if(trail.startz < cycle1.pos.z && trail.endz > cycle1.pos.z)
-			{
-				if(Math.ceil(cycle1.pos.x)+1 == Math.round(trail.x))
+				for(Trail trail : trails2)
 				{
-					System.out.println("TRAIL COLLISION");
-					state = PAUSE;
+					if(trail.startz < cycle.pos.z && trail.endz > cycle.pos.z)
+					{
+						if(Math.ceil(cycle.pos.x)+1 == Math.round(trail.x))
+						{
+							System.out.println("TRAIL2 COLLISION NORTH");
+							state = PAUSE;
+						}
+					}
+					if(trail.endz < cycle.pos.z && trail.startz > cycle.pos.z)
+					{
+						if(Math.ceil(cycle.pos.x)+1 == Math.round(trail.x))
+						{
+							System.out.println("TRAIL2 COLLISION NORTH");
+							state = PAUSE;
+						}
+					}
 				}
-			}
+				break;
+			case EAST:
+				for(Trail trail : trails1)
+				{
+					if(trail.startx < cycle.pos.x && trail.endx > cycle.pos.x)
+					{
+						if(Math.ceil(cycle.pos.z)+1 == Math.round(trail.z))
+						{
+							System.out.println("TRAIL1 COLLISION EAST");
+							state = PAUSE;
+						}
+					}
+					if(trail.endx < cycle.pos.x && trail.startx > cycle.pos.x)
+					{
+						if(Math.ceil(cycle.pos.z)+1 == Math.round(trail.z))
+						{
+							System.out.println("TRAIL1 COLLISION EAST");
+							state = PAUSE;
+						}
+					}
+				}
+				for(Trail trail : trails2)
+				{
+					if(trail.startx < cycle.pos.x && trail.endx > cycle.pos.x)
+					{
+						if(Math.ceil(cycle.pos.z)+1 == Math.round(trail.z))
+						{
+							System.out.println("TRAIL2 COLLISION EAST");
+							state = PAUSE;
+						}
+					}
+					if(trail.endx < cycle.pos.x && trail.startx > cycle.pos.x)
+					{
+						if(Math.ceil(cycle.pos.z)+1 == Math.round(trail.z))
+						{
+							System.out.println("TRAIL2 COLLISION EAST");
+							state = PAUSE;
+						}
+					}
+				}
+				break;
+
+			case SOUTH:
+				for(Trail trail : trails1)
+				{
+					if(trail.startz < cycle.pos.z && trail.endz > cycle.pos.z)
+					{
+						if(Math.ceil(cycle.pos.x)-1 == Math.round(trail.x))
+						{
+							System.out.println("TRAIL1 COLLISION SOUTH");
+							state = PAUSE;
+						}
+					}
+				}
+				for(Trail trail : trails2)
+				{
+					if(trail.startz < cycle.pos.z && trail.endz > cycle.pos.z)
+					{
+						if(Math.ceil(cycle.pos.x)-1 == Math.round(trail.x))
+						{
+							System.out.println("TRAIL2 COLLISION SOUTH");
+							state = PAUSE;
+						}
+					}
+					if(trail.endz < cycle.pos.z && trail.startz > cycle.pos.z)
+					{
+						if(Math.ceil(cycle.pos.x)-1 == Math.round(trail.x))
+						{
+							System.out.println("TRAIL2 COLLISION SOUTH");
+							state = PAUSE;
+						}
+					}
+				}
+				break;
 		}
 
 		if(Math.ceil(cycle1.pos.x)+1 == Math.ceil(cycle2.pos.x)-1)        // Same X position
@@ -576,6 +674,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	{
 		update();
 		display();
+		fpsLogger.log();
 	}
 
 	@Override

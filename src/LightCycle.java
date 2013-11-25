@@ -169,7 +169,7 @@ public class LightCycle {
 
 	public void movePlayer(int direction)
 	{
-		switch(direction)
+		switch (direction)
 		{
 			case Input.Keys.D:
 				if(this.direction == WEST)
@@ -200,7 +200,7 @@ public class LightCycle {
 				break;
 		}
 
-		switch(direction)
+		switch(this.direction)
 		{
 			case NORTH:
 				startNorth = true;

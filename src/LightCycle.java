@@ -135,6 +135,8 @@ public class LightCycle {
 
 		Gdx.gl11.glPopMatrix();
 
+
+
 //		Gdx.gl11.glDisable(GL11.GL_TEXTURE_2D);
 //		Gdx.gl11.glDisableClientState(GL11.GL_TEXTURE_COORD_ARRAY);
 	}

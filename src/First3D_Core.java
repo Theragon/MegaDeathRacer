@@ -537,12 +537,18 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x, 3.0f, cycle1.pos.z-2.5f, cycle1.pos.x, 0.0f, cycle1.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 		}
-	// Draw floor!
-		drawFloor();
-		cycle1.draw();
-		cycle2.draw();
-		drawTrail(trails1);
-		drawTrail(trails2);
+	    // Draw floor!
+        drawFloor();
+        // Set material on player 1.
+        float[] materialDiffuse2 = {1.0f,0.0f,0.0f,1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse2, 0);
+        cycle1.draw();
+        drawTrail(trails1);
+        // Set material on player 2.
+        float[] materialDiffuse3 = {1.0f,1.0f,1.0f,1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse3, 0);
+        cycle2.draw();
+        drawTrail(trails2);
 
 	//Lights
 		// Configure light 0
@@ -559,9 +565,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		float[] lightPosition12 = {-5.0f, -10.0f, -15.0f, 1.0f};
 		Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPosition12, 0);
 
-		// Set material on the cube.
-		float[] materialDiffuse2 = {0.2f, .3f, 0.6f, 1.0f};
-		Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse2, 0);
+
 
 	//Draw scene 2
 //		Gdx.gl11.glViewport(Gdx.graphics.getWidth() / 2, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight()); // Vertical
@@ -587,10 +591,15 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				break;
 		}
 
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse, 0);
 		drawFloor();
+        // Set material on player 1.
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse2, 0);
 		cycle1.draw();
+        drawTrail(trails1);
+        // Set material on player 2.
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse3, 0);
 		cycle2.draw();
-		drawTrail(trails1);
 		drawTrail(trails2);
 	}
 

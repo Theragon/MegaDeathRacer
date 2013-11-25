@@ -92,7 +92,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		gl11 = Gdx.gl11;
 		cycle1 = new LightCycle(1.0f, 2.0f, 1.0f, NORTH);
 		cycle1.startNorth = true;
-		cycle2 = new LightCycle(38.0f, 2.0f, 1.0f, SOUTH);
+		cycle2 = new LightCycle(38.0f, 2.0f, 38.0f, SOUTH);
 		cycle2.startSouth = true;
 
 		music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/EndOfLine.mp3"));
@@ -132,9 +132,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		else Gdx.gl11.glDisable(GL11.GL_LIGHT0);
 
 		float deltaTime = Gdx.graphics.getDeltaTime();
-
-		collisionDetection(cycle1);
-		collisionDetection(cycle2);
 
 		switch(cycle1.direction)                            // check what direction cycle 1 is facing
 		{
@@ -305,6 +302,9 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				break;
 		}
 		cycle2.updatePosition();
+
+		collisionDetection(cycle1);
+		collisionDetection(cycle2);
 	}
 
 	public void getPosition()
@@ -424,6 +424,47 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 						if(Math.ceil(cycle.pos.x)-1 == Math.round(trail.x))
 						{
 							System.out.println("TRAIL2 COLLISION SOUTH");
+							state = PAUSE;
+						}
+					}
+				}
+				break;
+
+			case WEST:
+				for(Trail trail : trails1)
+				{
+					if(trail.startx < cycle.pos.x && trail.endx > cycle.pos.x)
+					{
+						if(Math.ceil(cycle.pos.z)-1 == Math.round(trail.z))
+						{
+							System.out.println("TRAIL1 COLLISION WEST");
+							state = PAUSE;
+						}
+					}
+					if(trail.endx < cycle.pos.x && trail.startx > cycle.pos.x)
+					{
+						if(Math.ceil(cycle.pos.z)-1 == Math.round(trail.z))
+						{
+							System.out.println("TRAIL1 COLLISION WEST");
+							state = PAUSE;
+						}
+					}
+				}
+				for(Trail trail : trails2)
+				{
+					if(trail.startx < cycle.pos.x && trail.endx > cycle.pos.x)
+					{
+						if(Math.ceil(cycle.pos.z)-1 == Math.round(trail.z))
+						{
+							System.out.println("TRAIL2 COLLISION WEST");
+							state = PAUSE;
+						}
+					}
+					if(trail.endx < cycle.pos.x && trail.startx > cycle.pos.x)
+					{
+						if(Math.ceil(cycle.pos.z)-1 == Math.round(trail.z))
+						{
+							System.out.println("TRAIL2 COLLISION WEST");
 							state = PAUSE;
 						}
 					}

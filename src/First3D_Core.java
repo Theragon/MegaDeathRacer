@@ -309,6 +309,30 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 	public void collisionDetection()
 	{
+		// NORTH
+		for(Trail trail : trails1)
+		{
+			if(trail.startz < cycle1.pos.z && trail.endz > cycle1.pos.z)
+			{
+				if(Math.ceil(cycle1.pos.x)+1 == trail.x)
+				{
+					System.out.println("TRAIL COLLISION");
+					state = PAUSE;
+				}
+			}
+		}
+		for(Trail trail : trails2)
+		{
+			if(trail.startz < cycle1.pos.z && trail.endz > cycle1.pos.z)
+			{
+				if(Math.ceil(cycle1.pos.x)+1 == Math.round(trail.x))
+				{
+					System.out.println("TRAIL COLLISION");
+					state = PAUSE;
+				}
+			}
+		}
+
 		if(Math.ceil(cycle1.pos.x)+1 == Math.ceil(cycle2.pos.x)-1)        // Same X position
 		{
 			if(Math.ceil(cycle2.pos.z) == Math.ceil(cycle1.pos.z))    // Same Z position
@@ -320,7 +344,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 					state = PAUSE;
 				}
 			}
-
 		}
 	}
 

@@ -202,7 +202,7 @@ public class LightCycle {
 				break;
 		}
 
-		switch(direction)
+		switch(this.direction)
 		{
 			case NORTH:
 				startNorth = true;

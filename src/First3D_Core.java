@@ -24,7 +24,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 	LightCycle cycle1;
 	LightCycle cycle2;
-	static final int WORLDSIZE = 40;               // 20x20 grid
+	static final int WORLDSIZE = 80;               // 20x20 grid
 	static final byte SPEED = 5;
 	private byte state = 1;
 
@@ -539,42 +539,34 @@ public class First3D_Core implements ApplicationListener, InputProcessor
             {
                 case NORTH:
                     Gdx.gl11.glPushMatrix();
-                    Gdx.gl11.glTranslatef(wall.x-0.5f, 2.0f, wall.z);
-                    Gdx.gl11.glScalef(0.5f, 5.0f, wall.x);
+                    Gdx.gl11.glTranslatef(wall.x - 0.5f, 2.0f, wall.z);
+                    Gdx.gl11.glScalef(0.5f, 5.0f, wall.x + 1.0f);
                     drawBox();
                     Gdx.gl11.glPopMatrix();
                     break;
                 case SOUTH:
                     Gdx.gl11.glPushMatrix();
                     Gdx.gl11.glTranslatef(wall.x - 0.5f, 2.0f, wall.z);
-                    Gdx.gl11.glScalef(0.5f, 5.0f, wall.z*2);
+                    Gdx.gl11.glScalef(0.5f, 5.0f, wall.z*2 + 1.0f);
                     drawBox();
                     Gdx.gl11.glPopMatrix();
                     break;
                 case WEST:
                     Gdx.gl11.glPushMatrix();
                     Gdx.gl11.glTranslatef(wall.x, 2.0f, wall.z - 0.5f);
-                    Gdx.gl11.glScalef(wall.x*2, 5.0f, 0.5f);
+                    Gdx.gl11.glScalef(wall.x*2 +1.0f, 5.0f, 0.5f);
                     drawBox();
                     Gdx.gl11.glPopMatrix();
                     break;
                 case EAST:
                     Gdx.gl11.glPushMatrix();
-                    Gdx.gl11.glTranslatef(wall.x, 2.0f, wall.z);
-                    Gdx.gl11.glScalef(wall.x*2, 5.0f, 0.5f);
+                    Gdx.gl11.glTranslatef(wall.x, 2.0f, wall.z - 0.5f);
+                    Gdx.gl11.glScalef(wall.x*2 + 1.0f, 5.0f, 0.5f);
                     drawBox();
                     Gdx.gl11.glPopMatrix();
                     break;
-
             }
         }
-        /*Gdx.gl11.glPushMatrix();
-        Gdx.gl11.glTranslatef(((trail.startx+trail.endx)/2), 2.0f, trail.z);
-        Gdx.gl11.glScalef(trail.endx-trail.startx, 1.0f, 0.1f);
-        //Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
-        drawBox();
-        Gdx.gl11.glPopMatrix();
-        */
     }
 	
 	private void drawFloor()

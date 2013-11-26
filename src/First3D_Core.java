@@ -43,6 +43,9 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	static final byte PAUSE = 0;
 	static final byte RUNNING = 1;
 
+
+    ArrayList<Trail> walls = new ArrayList<Trail>();
+
 	ArrayList<Trail> trails1 = new ArrayList<Trail>();
 	int trailCount1 = -1;
 
@@ -88,6 +91,16 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 		Gdx.gl11.glVertexPointer(3, GL11.GL_FLOAT, 0, vertexBuffer);
 		//cam = new Camera(new Point3D(0, 3.5f, 0), new Point3D(19.0f, 0.0f, 1.0f), new Vector3D(0.0f, 1.0f, 0.0f));
+
+        Trail westWall = new Trail(WORLDSIZE/2, 5.0f, 0.0f, WEST);
+        Trail eastWall = new Trail(WORLDSIZE/2, 5.0f, WORLDSIZE, EAST);
+        Trail northWall = new Trail(WORLDSIZE, 5.0f, WORLDSIZE/2, NORTH);
+        Trail southWall = new Trail(0.0f, 5.0f, WORLDSIZE/2, SOUTH);
+
+        walls.add(westWall);
+        walls.add(eastWall);
+        walls.add(northWall);
+        walls.add(southWall);
 
 		gl11 = Gdx.gl11;
 		cycle1 = new LightCycle(1.0f, 2.0f, 1.0f, NORTH);
@@ -516,6 +529,53 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		Gdx.gl11.glNormal3f(0.0f, -1.0f, 0.0f);
 		Gdx.gl11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 20, 4);
 	}
+
+    private void drawWalls()
+    {
+
+        for(Trail wall : walls)
+        {
+            switch(wall.direction)
+            {
+                case NORTH:
+                    Gdx.gl11.glPushMatrix();
+                    Gdx.gl11.glTranslatef(wall.x-0.5f, 2.0f, wall.z);
+                    Gdx.gl11.glScalef(0.5f, 5.0f, wall.x);
+                    drawBox();
+                    Gdx.gl11.glPopMatrix();
+                    break;
+                case SOUTH:
+                    Gdx.gl11.glPushMatrix();
+                    Gdx.gl11.glTranslatef(wall.x - 0.5f, 2.0f, wall.z);
+                    Gdx.gl11.glScalef(0.5f, 5.0f, wall.z*2);
+                    drawBox();
+                    Gdx.gl11.glPopMatrix();
+                    break;
+                case WEST:
+                    Gdx.gl11.glPushMatrix();
+                    Gdx.gl11.glTranslatef(wall.x, 2.0f, wall.z - 0.5f);
+                    Gdx.gl11.glScalef(wall.x*2, 5.0f, 0.5f);
+                    drawBox();
+                    Gdx.gl11.glPopMatrix();
+                    break;
+                case EAST:
+                    Gdx.gl11.glPushMatrix();
+                    Gdx.gl11.glTranslatef(wall.x, 2.0f, wall.z);
+                    Gdx.gl11.glScalef(wall.x*2, 5.0f, 0.5f);
+                    drawBox();
+                    Gdx.gl11.glPopMatrix();
+                    break;
+
+            }
+        }
+        /*Gdx.gl11.glPushMatrix();
+        Gdx.gl11.glTranslatef(((trail.startx+trail.endx)/2), 2.0f, trail.z);
+        Gdx.gl11.glScalef(trail.endx-trail.startx, 1.0f, 0.1f);
+        //Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
+        drawBox();
+        Gdx.gl11.glPopMatrix();
+        */
+    }
 	
 	private void drawFloor()
 	{
@@ -578,6 +638,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x, 3.0f, cycle1.pos.z-2.5f, cycle1.pos.x, 0.0f, cycle1.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 		}
+        //Draw walls
+        drawWalls();
 	    // Draw floor!
         drawFloor();
         // Set material on player 1.

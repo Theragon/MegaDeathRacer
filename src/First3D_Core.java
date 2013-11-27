@@ -6,6 +6,8 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.GL11;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -52,7 +54,12 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	ArrayList<Trail> trails2 = new ArrayList<Trail>();
 	int trailCount2 = -1;
 
+	FloatBuffer vertexBuffer;
+
 	Music music;
+
+	private SpriteBatch spriteBatch;
+	private BitmapFont font;
 
 	private FPSLogger fpsLogger;
 
@@ -74,7 +81,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 		Gdx.gl11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
 
-		FloatBuffer vertexBuffer = BufferUtils.newFloatBuffer(72);
+		vertexBuffer = BufferUtils.newFloatBuffer(72);
 		vertexBuffer.put(new float[] {-0.5f, -0.5f, -0.5f, -0.5f, 0.5f, -0.5f,
 									  0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f,
 									  0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f,
@@ -90,17 +97,16 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		vertexBuffer.rewind();
 
 		Gdx.gl11.glVertexPointer(3, GL11.GL_FLOAT, 0, vertexBuffer);
-		//cam = new Camera(new Point3D(0, 3.5f, 0), new Point3D(19.0f, 0.0f, 1.0f), new Vector3D(0.0f, 1.0f, 0.0f));
 
-        Trail westWall = new Trail(WORLDSIZE/2, 5.0f, 0.0f, WEST);
-        Trail eastWall = new Trail(WORLDSIZE/2, 5.0f, WORLDSIZE, EAST);
-        Trail northWall = new Trail(WORLDSIZE, 5.0f, WORLDSIZE/2, NORTH);
-        Trail southWall = new Trail(0.0f, 5.0f, WORLDSIZE/2, SOUTH);
+		Trail northWall = new Trail(WORLDSIZE, 5.0f, WORLDSIZE/2, NORTH);
+		Trail eastWall = new Trail(WORLDSIZE/2, 5.0f, WORLDSIZE, EAST);
+		Trail southWall = new Trail(0.0f, 5.0f, WORLDSIZE/2, SOUTH);
+		Trail westWall = new Trail(WORLDSIZE/2, 5.0f, 0.0f, WEST);
 
-        walls.add(westWall);
-        walls.add(eastWall);
-        walls.add(northWall);
-        walls.add(southWall);
+		walls.add(northWall);
+		walls.add(eastWall);
+		walls.add(southWall);
+		walls.add(westWall);
 
 		gl11 = Gdx.gl11;
 		cycle1 = new LightCycle(1.0f, 2.0f, 1.0f, NORTH);
@@ -109,9 +115,12 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		cycle2.startSouth = true;
 
 		music = Gdx.audio.newMusic(Gdx.files.internal("assets/music/EndOfLine.mp3"));
+		music.setLooping(true);
 		music.play();
 
 		fpsLogger = new FPSLogger();
+		spriteBatch = new SpriteBatch();
+		font = new BitmapFont();
 	}
 
 	@Override
@@ -331,6 +340,11 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		switch(cycle.direction)
 		{
 			case NORTH:
+				if(Math.ceil(cycle.pos.x)+1 == Math.round(walls.get(NORTH).x))
+				{
+					System.out.println("NORTH WALL COLLISION");
+					state = PAUSE;
+				}
 				for(Trail trail : trails1)
 				{
 					if(trail.startz < cycle.pos.z && trail.endz > cycle.pos.z)
@@ -370,6 +384,11 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				}
 				break;
 			case EAST:
+				if(Math.ceil(cycle.pos.z)+1 == Math.round(walls.get(EAST).z))
+				{
+					System.out.println("EAST WALL COLLISION");
+					state = PAUSE;
+				}
 				for(Trail trail : trails1)
 				{
 					if(trail.startx < cycle.pos.x && trail.endx > cycle.pos.x)
@@ -411,9 +430,22 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				break;
 
 			case SOUTH:
+				if(Math.ceil(cycle.pos.x)-1 == Math.round(walls.get(SOUTH).x))
+				{
+					System.out.println("SOUTH WALL COLLISION");
+					state = PAUSE;
+				}
 				for(Trail trail : trails1)
 				{
 					if(trail.startz < cycle.pos.z && trail.endz > cycle.pos.z)
+					{
+						if(Math.ceil(cycle.pos.x)-1 == Math.round(trail.x))
+						{
+							System.out.println("TRAIL1 COLLISION SOUTH");
+							state = PAUSE;
+						}
+					}
+					if(trail.endz < cycle.pos.z && trail.startz > cycle.pos.z)
 					{
 						if(Math.ceil(cycle.pos.x)-1 == Math.round(trail.x))
 						{
@@ -444,6 +476,11 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				break;
 
 			case WEST:
+				if(Math.ceil(cycle.pos.z)-1 == Math.round(walls.get(WEST).z))
+				{
+					System.out.println("WEST WALL COLLISION");
+					state = PAUSE;
+				}
 				for(Trail trail : trails1)
 				{
 					if(trail.startx < cycle.pos.x && trail.endx > cycle.pos.x)
@@ -602,7 +639,17 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	private void display()
 	{
 		Gdx.gl11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-
+/*
+		if(state == PAUSE)
+		{
+			String beginMsg = "Press spacebar to Pong!";
+			this.spriteBatch.begin();
+			font.setColor(1f, 1f, 1f, 1f);
+			font.draw(spriteBatch,beginMsg,230, 300);
+			this.spriteBatch.end();
+		}
+		Gdx.gl11.glVertexPointer(3, GL11.GL_FLOAT, 0, vertexBuffer);
+*/
 	//Lights
 		// Configure light 0
 		float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -700,8 +747,9 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x, 3.0f, cycle2.pos.z-2.5f, cycle2.pos.x, 0.0f, cycle2.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 		}
-
         Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse, 0);
+		//Draw walls
+		drawWalls();
 		drawFloor();
         // Set material on player 1.
         Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse2, 0);

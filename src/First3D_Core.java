@@ -693,6 +693,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				break;
 		}
         //Draw walls
+        float[] materialDiff = {0.1f,0.9f,0.1f,1.0f};
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiff, 0);
         drawWalls();
 	    // Draw floor!
         drawFloor();
@@ -747,8 +749,8 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x, 3.0f, cycle2.pos.z-2.5f, cycle2.pos.x, 0.0f, cycle2.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 		}
-        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse, 0);
 		//Draw walls
+        Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiff, 0);
 		drawWalls();
 		drawFloor();
         // Set material on player 1.

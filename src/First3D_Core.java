@@ -662,19 +662,19 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		switch (cycle1.direction)
 		{
 			case NORTH:
-				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x-2.5f, 3.0f, cycle1.pos.z, cycle1.pos.x+2, 0.0f, cycle1.pos.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x-2.5f, 4.0f, cycle1.pos.z, cycle1.pos.x+2, 0.0f, cycle1.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 			case EAST:
-				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x, 3.0f, cycle1.pos.z-2.5f, cycle1.pos.x, 0.0f, cycle1.pos.z+2, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x, 4.0f, cycle1.pos.z-2.5f, cycle1.pos.x, 0.0f, cycle1.pos.z+2, 0.0f, 1.0f, 0.0f);
 				break;
 			case SOUTH:
-				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x+2.5f, 3.0f, cycle1.pos.z, cycle1.pos.x-2, 0.0f, cycle1.pos.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x+2.5f, 4.0f, cycle1.pos.z, cycle1.pos.x-2, 0.0f, cycle1.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 			case WEST:
-				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x, 3.0f, cycle1.pos.z+2.5f, cycle1.pos.x, 0.0f, cycle1.pos.z-2, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x, 4.0f, cycle1.pos.z+2.5f, cycle1.pos.x, 0.0f, cycle1.pos.z-2, 0.0f, 1.0f, 0.0f);
 				break;
 			default:
-				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x, 3.0f, cycle1.pos.z-2.5f, cycle1.pos.x, 0.0f, cycle1.pos.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle1.pos.x, 4.0f, cycle1.pos.z-2.5f, cycle1.pos.x, 0.0f, cycle1.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 		}
         //Draw walls
@@ -717,19 +717,19 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		switch (cycle2.direction)
 		{
 			case NORTH:
-				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x-2.5f, 3.0f, cycle2.pos.z, cycle2.pos.x+2, 0.0f, cycle2.pos.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x-2.5f, 4.0f, cycle2.pos.z, cycle2.pos.x+2, 0.0f, cycle2.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 			case EAST:
-				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x, 3.0f, cycle2.pos.z-2.5f, cycle2.pos.x, 0.0f, cycle2.pos.z+2, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x, 4.0f, cycle2.pos.z-2.5f, cycle2.pos.x, 0.0f, cycle2.pos.z+2, 0.0f, 1.0f, 0.0f);
 				break;
 			case SOUTH:
-				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x+2.5f, 3.0f, cycle2.pos.z, cycle2.pos.x-2, 0.0f, cycle2.pos.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x+2.5f, 4.0f, cycle2.pos.z, cycle2.pos.x-2, 0.0f, cycle2.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 			case WEST:
-				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x, 3.0f, cycle2.pos.z+2.5f, cycle2.pos.x, 0.0f, cycle2.pos.z-2, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x, 4.0f, cycle2.pos.z+2.5f, cycle2.pos.x, 0.0f, cycle2.pos.z-2, 0.0f, 1.0f, 0.0f);
 				break;
 			default:
-				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x, 3.0f, cycle2.pos.z-2.5f, cycle2.pos.x, 0.0f, cycle2.pos.z, 0.0f, 1.0f, 0.0f);
+				Gdx.glu.gluLookAt(Gdx.gl11, cycle2.pos.x, 4.0f, cycle2.pos.z-2.5f, cycle2.pos.x, 0.0f, cycle2.pos.z, 0.0f, 1.0f, 0.0f);
 				break;
 		}
         Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiffuse, 0);

@@ -58,9 +58,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 	Music music;
 
-	private SpriteBatch spriteBatch;
-	private BitmapFont font;
-
 	private FPSLogger fpsLogger;
 
 	@Override
@@ -119,8 +116,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		music.play();
 
 		fpsLogger = new FPSLogger();
-		spriteBatch = new SpriteBatch();
-		font = new BitmapFont();
 	}
 
 	@Override
@@ -327,12 +322,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 
 		collisionDetection(cycle1);
 		collisionDetection(cycle2);
-	}
-
-	public void getPosition()
-	{
-		System.out.println("Cycle1: " + (Math.ceil(cycle1.pos.x)+1) + "," + Math.ceil(cycle1.pos.z));
-		System.out.println("Cycle2: " + (Math.ceil(cycle2.pos.x)-1) + "," + Math.ceil(cycle2.pos.z));
 	}
 
 	public void collisionDetection(LightCycle cycle)
@@ -639,17 +628,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	private void display()
 	{
 		Gdx.gl11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-/*
-		if(state == PAUSE)
-		{
-			String beginMsg = "Press spacebar to Pong!";
-			this.spriteBatch.begin();
-			font.setColor(1f, 1f, 1f, 1f);
-			font.draw(spriteBatch,beginMsg,230, 300);
-			this.spriteBatch.end();
-		}
-		Gdx.gl11.glVertexPointer(3, GL11.GL_FLOAT, 0, vertexBuffer);
-*/
+
 	//Lights
 		// Configure light 0
 		float[] lightDiffuse = {1.0f, 1.0f, 1.0f, 1.0f};
@@ -724,8 +703,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		float[] lightPosition12 = {-5.0f, -10.0f, -15.0f, 1.0f};
 		Gdx.gl11.glLightfv(GL11.GL_LIGHT1, GL11.GL_POSITION, lightPosition12, 0);
 
-
-
 	//Draw scene 2
 //		Gdx.gl11.glViewport(Gdx.graphics.getWidth() / 2, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight()); // Vertical
 		Gdx.gl11.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2);                           // Horizontal
@@ -768,25 +745,21 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		switch (trail.direction)
 		{
 			case NORTH:
-//				trail.end = cycle.pos.x;
 				trail.endx = cycle.pos.x;
 				trail.endz = cycle.pos.z;
 				break;
 
 			case EAST:
-//				trail.end = cycle.pos.z;
 				trail.endx = cycle.pos.x;
 				trail.endz = cycle.pos.z;
 				break;
 
 			case SOUTH:
-//				trail.end = cycle.pos.x;
 				trail.endx = cycle.pos.x;
 				trail.endz = cycle.pos.z;
 				break;
 
 			case WEST:
-//				trail.end = cycle.pos.z;
 				trail.endx = cycle.pos.x;
 				trail.endz = cycle.pos.z;
 				break;
@@ -803,7 +776,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 					Gdx.gl11.glPushMatrix();
 					Gdx.gl11.glTranslatef(((trail.startx+trail.endx)/2), 2.0f, trail.z);
 					Gdx.gl11.glScalef(trail.endx-trail.startx, 1.0f, 0.1f);
-					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
 					drawBox();
 					Gdx.gl11.glPopMatrix();
 					break;
@@ -812,7 +784,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 					Gdx.gl11.glPushMatrix();
 					Gdx.gl11.glTranslatef(trail.x, 2.0f, ((trail.startz+trail.endz)/2));
 					Gdx.gl11.glScalef(0.1f, 1.0f, trail.endz-trail.startz);
-					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
 					drawBox();
 					Gdx.gl11.glPopMatrix();
 					break;
@@ -821,7 +792,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 					Gdx.gl11.glPushMatrix();
 					Gdx.gl11.glTranslatef(((trail.startx+trail.endx)/2), 2.0f, trail.z);
 					Gdx.gl11.glScalef(trail.endx-trail.startx, 1.0f, 0.1f);
-					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
 					drawBox();
 					Gdx.gl11.glPopMatrix();
 					break;
@@ -830,7 +800,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 					Gdx.gl11.glPushMatrix();
 					Gdx.gl11.glTranslatef(trail.x, 2.0f, ((trail.startz+trail.endz)/2));
 					Gdx.gl11.glScalef(0.1f, 1.0f, trail.endz-trail.startz);
-					//Gdx.gl11.glRotatef(angle, 0.0f, 1.0f, 0.0f);
 					drawBox();
 					Gdx.gl11.glPopMatrix();
 					break;
@@ -889,9 +858,6 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 				if(state == PAUSE) state = RUNNING;
 				else if(state == RUNNING) state = PAUSE;
 				break;
-			case Input.Keys.SPACE:
-				getPosition();
-				break;
 			case Input.Keys.L:
 				this.ligthBulbState = this.ligthBulbState ? false:true;
 				break;
@@ -901,12 +867,7 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 			default:
 				break;
 		}
-		/*if(arg0 == Input.Keys.L){
-			this.ligthBulbState = this.ligthBulbState ? false:true;
-		}
-		if(arg0 == Input.Keys.O){
-			this.wiggleLights = this.wiggleLights ? false:true;
-		}*/
+
 		return false;
 	}
 

@@ -608,15 +608,30 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 	
 	private void drawFloor()
 	{
+
+        float[] materialDiff1 = {0.1f,0.9f,0.1f,1.0f};
+        float[] materialDiff2 = {0.0f,0.0f,0.0f,0.0f};
+
+
 		for(float fx = 0.0f; fx < WORLDSIZE; fx += 1.0)
 		{
 			for(float fz = 0.0f; fz < WORLDSIZE; fz += 1.0)
 			{
+
 				Gdx.gl11.glPushMatrix();
 				Gdx.gl11.glTranslatef(fx, 1.0f, fz);
-				Gdx.gl11.glScalef(0.97f, 1.0f, 0.97f);
+				Gdx.gl11.glScalef(0.95f, 0.1f, 0.95f);
+                Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiff2, 0);
 				drawBox();
 				Gdx.gl11.glPopMatrix();
+
+                Gdx.gl11.glPushMatrix();
+                Gdx.gl11.glTranslatef(fx, 0.99f, fz);
+                Gdx.gl11.glScalef(1.0f, 0.1f, 1.0f);
+                Gdx.gl11.glMaterialfv(GL11.GL_FRONT, GL11.GL_DIFFUSE, materialDiff1, 0);
+                drawBox();
+                Gdx.gl11.glPopMatrix();
+
 			}
 		}
 	}

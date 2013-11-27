@@ -766,25 +766,25 @@ public class First3D_Core implements ApplicationListener, InputProcessor
 		switch (trail.direction)
 		{
 			case NORTH:
-				trail.end = cycle.pos.x;
+//				trail.end = cycle.pos.x;
 				trail.endx = cycle.pos.x;
 				trail.endz = cycle.pos.z;
 				break;
 
 			case EAST:
-				trail.end = cycle.pos.z;
+//				trail.end = cycle.pos.z;
 				trail.endx = cycle.pos.x;
 				trail.endz = cycle.pos.z;
 				break;
 
 			case SOUTH:
-				trail.end = cycle.pos.x;
+//				trail.end = cycle.pos.x;
 				trail.endx = cycle.pos.x;
 				trail.endz = cycle.pos.z;
 				break;
 
 			case WEST:
-				trail.end = cycle.pos.z;
+//				trail.end = cycle.pos.z;
 				trail.endx = cycle.pos.x;
 				trail.endz = cycle.pos.z;
 				break;
